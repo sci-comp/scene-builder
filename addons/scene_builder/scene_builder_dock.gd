@@ -94,6 +94,8 @@ enum TransformMode {
 
 var placement_mode_enabled: bool = false
 var current_transform_mode: TransformMode = TransformMode.NONE
+var is_dragging_to_rotate: bool = false
+var rotation_sensitivity := 0.01
 
 func is_transform_mode_enabled() -> bool:
 	return current_transform_mode != TransformMode.NONE
@@ -224,7 +226,7 @@ func _process(_delta: float) -> void:
 			end_placement_mode()
 			return
 
-		if !is_transform_mode_enabled():
+		if !is_transform_mode_enabled() and !is_dragging_to_rotate:
 			if preview_instance:
 				populate_preview_instance_rid_array(preview_instance)
 			var result = perform_raycast_with_exclusion(preview_instance_rid_array)
@@ -259,6 +261,18 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 	
 	if event is InputEventMouseMotion:
 		if placement_mode_enabled:
+			if is_dragging_to_rotate:
+				# rotate around Y axis based on horizontal mouse movement
+				var y_rotation: float = event.relative.x * rotation_sensitivity
+				var y_quaternion := Quaternion(Vector3.UP, y_rotation)
+
+				if btn_use_local_space.button_pressed:
+					preview_instance.basis = preview_instance.basis * Basis(y_quaternion)
+				else:
+					preview_instance.basis = Basis(y_quaternion) * preview_instance.basis
+
+				return EditorPlugin.AFTER_GUI_INPUT_STOP
+
 			var relative_motion: float
 			if abs(event.relative.x) > abs(event.relative.y):
 				relative_motion = event.relative.x
@@ -331,27 +345,27 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 					preview_instance.scale = snap_scale_to_grid(new_scale)
 
 	if event is InputEventMouseButton:
-		if event.is_pressed() and !event.is_echo():
-
-			if placement_mode_enabled:
-				var mouse_pos = viewport.get_mouse_position()
-				if mouse_pos.x >= 0 and mouse_pos.y >= 0:
-					if mouse_pos.x <= viewport.size.x and mouse_pos.y <= viewport.size.y:
-
+		if placement_mode_enabled:
+			var mouse_pos = viewport.get_mouse_position()
+			if mouse_pos.x >= 0 and mouse_pos.y >= 0:
+				if mouse_pos.x <= viewport.size.x and mouse_pos.y <= viewport.size.y:
+					if event.is_pressed() and !event.is_echo():
 						if event.button_index == MOUSE_BUTTON_LEFT:
-
 							if is_transform_mode_enabled():
 								original_preview_basis = preview_instance.basis
 								original_preview_scale = preview_instance.scale
 								end_transform_mode()
 								viewport.warp_mouse(original_mouse_position)
-							else:
+							elif is_dragging_to_rotate:
+								# technically, should never get here since we check for is_dragging_to_rotate above
 								instantiate_selected_item_at_position()
+								_end_drag_rotation()
+							else:
+								_start_drag_rotation()
 
 							return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 						elif event.button_index == MOUSE_BUTTON_RIGHT:
-
 							if is_transform_mode_enabled():
 								# Revert preview transformations
 								print("[SceneBuilderDock] warping to: ", original_mouse_position)
@@ -361,6 +375,12 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 								viewport.warp_mouse(original_mouse_position)
 
 								return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+					elif not event.is_pressed():  # mouse button released
+						if event.button_index == MOUSE_BUTTON_LEFT and is_dragging_to_rotate:
+							instantiate_selected_item_at_position()
+							_end_drag_rotation()
+							return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 	elif event is InputEventKey:
 		if event.is_pressed() and !event.is_echo():
@@ -730,6 +750,8 @@ func create_preview_instance() -> void:
 
 	clear_preview_instance()
 
+	is_dragging_to_rotate = false
+
 	scene_builder_temp = scene_root.get_node_or_null("SceneBuilderTemp")
 	if not scene_builder_temp:
 		scene_builder_temp = Node.new()
@@ -774,6 +796,16 @@ func end_placement_mode() -> void:
 func end_transform_mode() -> void:
 	current_transform_mode = TransformMode.NONE
 	reset_indicators()
+
+func _start_drag_rotation() -> void:
+	is_dragging_to_rotate = true
+	original_preview_basis = preview_instance.basis
+
+
+func _end_drag_rotation() -> void:
+	is_dragging_to_rotate = false
+	preview_instance.basis = original_preview_basis
+
 
 func load_items_from_collection_folder_on_disk(_collection_name: String):
 	print("[SceneBuilderDock] Collecting items from collection folder")
