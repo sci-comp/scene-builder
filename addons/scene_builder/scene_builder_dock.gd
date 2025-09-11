@@ -120,6 +120,7 @@ var scene_builder_temp: Node # Used as a parent to the preview item
 var previous_parent_node: Node3D = null
 var update_visible_collection_buttons_timer = Timer.new()
 var grid_containers: Array[GridContainer] = []
+var grid_container_resized: bool = false
 
 # ---- Notifications -----------------------------------------------------------
 
@@ -215,7 +216,7 @@ func _enter_tree() -> void:
 
 	#endregion
 	update_visible_collection_buttons_timer.name = "Update Texture Buttons"
-	update_visible_collection_buttons_timer.wait_time = 0.3
+	update_visible_collection_buttons_timer.wait_time = 0.1
 	update_visible_collection_buttons_timer.one_shot = true
 	update_visible_collection_buttons_timer.timeout.connect(update_visible_collection_buttons)
 	add_child(update_visible_collection_buttons_timer)
@@ -618,9 +619,9 @@ func reload_all_items() -> void:
 				_node.queue_free()		
 
 	grid_containers.clear()
+	texture_buttons_by_collection.clear()
 
 	refresh_collection_names()
-	texture_buttons_by_collection.clear()
 	
 	for name in collection_names:
 		texture_buttons_by_collection[name] = []
@@ -635,13 +636,10 @@ func reload_all_items() -> void:
 
 			var grid_container: GridContainer = tab_container.get_node("%s/Grid" % i)
 			grid_containers.append(grid_container)
-			grid_container.visible = false
 			
-			if grid_container.get_parent().is_connected("resized", Callable(self, "_on_grid_resized")):
-				grid_container.get_parent().disconnect("resized", Callable(self, "_on_grid_resized"))
-
-			grid_container.get_parent().resized.connect(_on_grid_resized)
-						
+			if not grid_container.get_parent().is_connected("resized", Callable(self, "_on_grid_resized")):
+				grid_container.get_parent().resized.connect(_on_grid_resized)
+					
 			load_items_from_collection_folder_on_disk(collection_name)
 
 			item_highlighters_by_collection[collection_name] = {}
@@ -671,7 +669,7 @@ func reload_all_items() -> void:
 				nine_patch.self_modulate = Color("000000") # black  # 6a9d2e green
 				item_highlighters_by_collection[collection_name][key] = nine_patch
 				texture_button.add_child(nine_patch)
-
+		
 	select_collection(0)
 	update_visible_collection_buttons()
 
@@ -687,8 +685,12 @@ func reload_all_items() -> void:
 	print("[SceneBuilderDock] Ready with %s collections and %s items" % [str(_num_populated_collections), str(_total_items)])
 
 func _on_grid_resized() -> void:
-	for grid_container : GridContainer in grid_containers: 
-		grid_container.visible = false
+	for grid_container : GridContainer in grid_containers:
+		if(grid_container.columns > 1):
+			grid_container.columns = grid_container.columns - 1
+
+	if not grid_container_resized:
+		grid_container_resized = true
 		if update_visible_collection_buttons_timer.is_stopped():
 			update_visible_collection_buttons_timer.start()
 
@@ -710,10 +712,10 @@ func update_visible_collection_buttons() -> void:
 
 	var scroll_container = grid_container.get_parent()
 	var available_width = scroll_container.size.x
-	
+
 	if scroll_container.get_v_scroll_bar() and scroll_container.get_v_scroll_bar().visible:
-			available_width -= scroll_container.get_v_scroll_bar().size.x
-	
+		available_width -= scroll_container.get_v_scroll_bar().size.x
+
 	if available_width <= 0:
 		available_width = scene_builder_dock.size.x
 
@@ -724,10 +726,9 @@ func update_visible_collection_buttons() -> void:
 
 	for button: TextureButton in texture_buttons_by_collection[collection_name]:
 		button.custom_minimum_size = Vector2(button_width,button_width)
-
+		
 	grid_container.columns = num_columns
-	grid_container.queue_sort()
-	grid_container.visible = true
+	grid_container_resized = false
 
 func update_world_3d() -> bool:
 	var new_scene_root = EditorInterface.get_edited_scene_root()
@@ -866,13 +867,11 @@ func end_transform_mode() -> void:
 func _start_drag_rotation() -> void:
 	is_dragging_to_rotate = true
 	original_preview_basis = preview_instance.basis
-
-
+	
 func _end_drag_rotation() -> void:
 	is_dragging_to_rotate = false
 	preview_instance.basis = original_preview_basis
-
-
+	
 func load_items_from_collection_folder_on_disk(_collection_name: String):
 	print("[SceneBuilderDock] Collecting items from collection folder")
 
