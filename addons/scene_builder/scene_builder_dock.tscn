@@ -19,6 +19,7 @@ anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 348.0
 grow_vertical = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Collection" type="VBoxContainer" parent="."]
@@ -244,6 +245,7 @@ metadata/_tab_index = 0
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/1"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 columns = 4
 
 [node name="2" type="ScrollContainer" parent="Collection/TabContainer"]
@@ -550,10 +552,10 @@ layout_mode = 2
 [node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-current_tab = 2
+size_flags_horizontal = 3
+current_tab = 0
 
 [node name="Options" type="VBoxContainer" parent="Settings/Tab"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -572,7 +574,7 @@ text = "Surface normal"
 [node name="Orientation" type="VBoxContainer" parent="Settings/Tab/Options/FirstRow"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Settings/Tab/Options/FirstRow/Orientation"]
 layout_mode = 2
@@ -582,6 +584,7 @@ vertical_alignment = 1
 
 [node name="ButtonGroup" type="HBoxContainer" parent="Settings/Tab/Options/FirstRow/Orientation"]
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="X" type="CheckBox" parent="Settings/Tab/Options/FirstRow/Orientation/ButtonGroup"]
 layout_mode = 2
@@ -609,7 +612,7 @@ layout_mode = 2
 [node name="lblParentNode" type="Label" parent="Settings/Tab/Options/ParentNode"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 text = "Parent"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -618,7 +621,6 @@ vertical_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
-size_flags_horizontal = 4
 text = "(root)"
 text_overrun_behavior = 3
 
@@ -626,7 +628,7 @@ text_overrun_behavior = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 text = "Force Root"
 
 [node name="EmptySpace2" type="Label" parent="Settings/Tab/Options/ParentNode"]
@@ -669,10 +671,12 @@ size_flags_horizontal = 5
 
 [node name="Label" type="Label" parent="Settings/Tab/Path3D/Separation"]
 layout_mode = 2
+size_flags_horizontal = 0
 text = "Separation Distance"
 
 [node name="SpinBox" type="SpinBox" parent="Settings/Tab/Path3D/Separation"]
 layout_mode = 2
+size_flags_horizontal = 0
 min_value = 0.25
 step = 0.25
 value = 1.0
@@ -680,7 +684,7 @@ suffix = "m"
 
 [node name="Jitter" type="HBoxContainer" parent="Settings/Tab/Path3D"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Settings/Tab/Path3D/Jitter"]
 layout_mode = 2
@@ -688,22 +692,25 @@ text = "Jitter"
 
 [node name="X" type="SpinBox" parent="Settings/Tab/Path3D/Jitter"]
 layout_mode = 2
+size_flags_horizontal = 0
 max_value = 360.0
 suffix = "deg"
 
 [node name="Y" type="SpinBox" parent="Settings/Tab/Path3D/Jitter"]
 layout_mode = 2
+size_flags_horizontal = 0
 max_value = 360.0
 suffix = "deg"
 
 [node name="Z" type="SpinBox" parent="Settings/Tab/Path3D/Jitter"]
 layout_mode = 2
+size_flags_horizontal = 0
 max_value = 360.0
 suffix = "deg"
 
 [node name="YOffset" type="HBoxContainer" parent="Settings/Tab/Path3D"]
 layout_mode = 2
-size_flags_horizontal = 5
+size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Settings/Tab/Path3D/YOffset"]
 layout_mode = 2
@@ -719,6 +726,7 @@ layout_mode = 2
 text = "Place Fence"
 
 [node name="Snap" type="VBoxContainer" parent="Settings/Tab"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -727,7 +735,7 @@ layout_mode = 2
 
 [node name="Left" type="VBoxContainer" parent="Settings/Tab/Snap/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 7
+size_flags_horizontal = 0
 size_flags_vertical = 5
 
 [node name="EnableSnap" type="CheckButton" parent="Settings/Tab/Snap/HBoxContainer/Left"]
@@ -739,13 +747,13 @@ text = "Snap"
 
 [node name="Right" type="VBoxContainer" parent="Settings/Tab/Snap/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 7
+size_flags_horizontal = 3
 size_flags_vertical = 5
 
 [node name="TranslateSnap" type="HBoxContainer" parent="Settings/Tab/Snap/HBoxContainer/Right"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 5
+size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Settings/Tab/Snap/HBoxContainer/Right/TranslateSnap"]
 layout_mode = 2
@@ -762,7 +770,7 @@ suffix = "m"
 [node name="RotateSnap" type="HBoxContainer" parent="Settings/Tab/Snap/HBoxContainer/Right"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 5
+size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Settings/Tab/Snap/HBoxContainer/Right/RotateSnap"]
 layout_mode = 2
@@ -778,7 +786,7 @@ suffix = "deg"
 [node name="ScaleSnap" type="HBoxContainer" parent="Settings/Tab/Snap/HBoxContainer/Right"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 5
+size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Settings/Tab/Snap/HBoxContainer/Right/ScaleSnap"]
 layout_mode = 2
@@ -791,10 +799,10 @@ step = 0.1
 value = 10.0
 suffix = "%"
 
-[node name="EnablePlane" type="CheckButton" parent="Settings/Tab/Snap"]
+[node name="EnablePlane" type="CheckButton" parent="Settings/Tab/Snap/HBoxContainer/Right"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 size_flags_vertical = 4
 text = "Plane"
 
@@ -803,7 +811,7 @@ layout_mode = 2
 
 [node name="Spacer" type="Label" parent="Settings/Tab/Snap/Plane"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 
 [node name="lblYPosLabel" type="Label" parent="Settings/Tab/Snap/Plane"]
 layout_mode = 2
