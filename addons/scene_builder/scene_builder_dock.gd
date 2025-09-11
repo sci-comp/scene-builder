@@ -11,6 +11,9 @@ var path_to_collection_names: String
 # Constants
 var num_collections: int = 24
 
+# Dictionary to store all texture buttons by collection
+var texture_buttons_by_collection: Dictionary[Variant, Variant] = {}
+
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var toolbox: SceneBuilderToolbox = SceneBuilderToolbox.new()
 var undo_redo: EditorUndoRedoManager = get_undo_redo()
@@ -114,6 +117,9 @@ var original_mouse_position: Vector2 = Vector2.ONE
 var random_offset_y: float = 0
 var original_preview_scale: Vector3 = Vector3.ONE
 var scene_builder_temp: Node # Used as a parent to the preview item
+var previous_parent_node: Node3D = null
+var update_visible_collection_buttons_timer = Timer.new()
+var grid_containers: Array[GridContainer] = []
 
 # ---- Notifications -----------------------------------------------------------
 
@@ -159,7 +165,7 @@ func _enter_tree() -> void:
 	btn_surface_normal_z = scene_builder_dock.get_node("%Orientation/ButtonGroup/Z")
 	
 	btn_parent_node_selector = scene_builder_dock.get_node("%ParentNodeSelector")
-	var script_path = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_node_path_selector.gd")
+	var script_path: String = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_node_path_selector.gd")
 	if script_path != "":
 		btn_parent_node_selector.set_script(load(script_path))
 		btn_parent_node_selector.path_selected.connect(set_parent_node)
@@ -208,19 +214,23 @@ func _enter_tree() -> void:
 	lbl_indicator_scale = scene_builder_dock.get_node("%Indicators/4")
 
 	#endregion
-
-	#
+	update_visible_collection_buttons_timer.name = "Update Texture Buttons"
+	update_visible_collection_buttons_timer.wait_time = 0.3
+	update_visible_collection_buttons_timer.one_shot = true
+	update_visible_collection_buttons_timer.timeout.connect(update_visible_collection_buttons)
+	add_child(update_visible_collection_buttons_timer)
+	
 	reload_all_items()
 	update_world_3d()
 
 func _exit_tree() -> void:
 	remove_control_from_docks(scene_builder_dock)
 	scene_builder_dock.queue_free()
+	update_visible_collection_buttons_timer.queue_free()
 
 func _process(_delta: float) -> void:
 	# Update preview item position
 	if placement_mode_enabled:
-
 		if not scene_root or not scene_root is Node3D or not scene_root.is_inside_tree():
 			print("[SceneBuilderDock] Scene root invalid, ending placement mode")
 			end_placement_mode()
@@ -229,7 +239,7 @@ func _process(_delta: float) -> void:
 		if !is_transform_mode_enabled() and !is_dragging_to_rotate:
 			if preview_instance:
 				populate_preview_instance_rid_array(preview_instance)
-			var result = perform_raycast_with_exclusion(preview_instance_rid_array)
+			var result: Dictionary = perform_raycast_with_exclusion(preview_instance_rid_array)
 			if result and result.position:
 				var _preview_item = scene_root.get_node_or_null("SceneBuilderTemp")
 				if _preview_item and _preview_item.get_child_count() > 0:
@@ -295,7 +305,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 					preview_instance.global_position  = snap_position_to_grid(new_pos)
 				TransformMode.ROTATION_X:
 					rot_offset_x += relative_motion
-					var snapped_offset = rot_offset_x
+					var snapped_offset: float = rot_offset_x
 					if checkbox_snap_enabled.button_pressed:
 						var snap_radians = deg_to_rad(spinbox_rotate_snap.value)
 						snapped_offset = round(rot_offset_x / snap_radians) * snap_radians
@@ -310,7 +320,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						preview_instance.basis = Basis(global_quat) * original_preview_basis
 				TransformMode.ROTATION_Y:
 					rot_offset_y += relative_motion
-					var snapped_offset = rot_offset_y
+					var snapped_offset: float = rot_offset_y
 					if checkbox_snap_enabled.button_pressed:
 						var snap_radians = deg_to_rad(spinbox_rotate_snap.value)
 						snapped_offset = round(rot_offset_y / snap_radians) * snap_radians
@@ -325,7 +335,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						preview_instance.basis = Basis(global_quat) * original_preview_basis
 				TransformMode.ROTATION_Z:
 					rot_offset_z += relative_motion
-					var snapped_offset = rot_offset_z
+					var snapped_offset: float = rot_offset_z
 					if checkbox_snap_enabled.button_pressed:
 						var snap_radians = deg_to_rad(spinbox_rotate_snap.value)
 						snapped_offset = round(rot_offset_z / snap_radians) * snap_radians
@@ -343,7 +353,9 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 					scale_offset = clamp(scale_offset, -0.95, 20.0)
 					var new_scale: Vector3 = original_preview_scale * (1 + scale_offset)
 					preview_instance.scale = snap_scale_to_grid(new_scale)
-
+				TransformMode.NONE:
+					pass
+		
 	if event is InputEventMouseButton:
 		if placement_mode_enabled:
 			var mouse_pos = viewport.get_mouse_position()
@@ -536,7 +548,7 @@ func on_item_icon_clicked(_button_name: String) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		var item = selected_collection[_button_name]
 		EditorInterface.edit_resource(item)
-		var tabs = EditorInterface.get_inspector().get_parent().get_parent() as TabContainer
+		var tabs: TabContainer = EditorInterface.get_inspector().get_parent().get_parent() as TabContainer
 		tabs.current_tab = tabs.get_tab_idx_from_control(EditorInterface.get_inspector().get_parent())
 		return
 	
@@ -547,8 +559,7 @@ func on_item_icon_clicked(_button_name: String) -> void:
 		end_placement_mode()
 	elif selected_item_name != _button_name:
 		select_item(selected_collection_name, _button_name)
-
-var previous_parent_node: Node3D = null
+		
 func on_force_root_toggled(pressed: bool) -> void:
 	if pressed:
 		if selected_parent_node:
@@ -601,15 +612,21 @@ func set_parent_node(node_path: NodePath) -> void:
 
 func reload_all_items() -> void:
 	print("[SceneBuilderDock] Freeing all texture buttons")
-	for i in range(1, num_collections + 1):
-		var grid_container: GridContainer = tab_container.get_node("%s/Grid" % i)
-		for _node in grid_container.get_children():
-			_node.queue_free()
+	
+	for grid_container: GridContainer in grid_containers:
+			for _node in grid_container.get_children():
+				_node.queue_free()		
+
+	grid_containers.clear()
 
 	refresh_collection_names()
+	texture_buttons_by_collection.clear()
+	
+	for name in collection_names:
+		texture_buttons_by_collection[name] = []
 
 	print("[SceneBuilderDock] Loading all items from all collections")
-	var i = 0
+	var i: int = 0
 	for collection_name in collection_names:
 		i += 1
 
@@ -617,11 +634,18 @@ func reload_all_items() -> void:
 			print("[SceneBuilderDock] Populating grid with icons")
 
 			var grid_container: GridContainer = tab_container.get_node("%s/Grid" % i)
+			grid_containers.append(grid_container)
+			grid_container.visible = false
+			
+			if grid_container.get_parent().is_connected("resized", Callable(self, "_on_grid_resized")):
+				grid_container.get_parent().disconnect("resized", Callable(self, "_on_grid_resized"))
 
+			grid_container.get_parent().resized.connect(_on_grid_resized)
+						
 			load_items_from_collection_folder_on_disk(collection_name)
 
 			item_highlighters_by_collection[collection_name] = {}
-
+			
 			for key: String in ordered_keys_by_collection[collection_name]:
 				var item: SceneBuilderItem = items_by_collection[collection_name][key]
 				var texture_button: TextureButton = TextureButton.new()
@@ -629,13 +653,11 @@ func reload_all_items() -> void:
 				texture_button.texture_normal = item.texture
 				texture_button.tooltip_text = item.item_name
 				texture_button.ignore_texture_size = true
-				texture_button.stretch_mode = TextureButton.STRETCH_SCALE
-				texture_button.custom_minimum_size = Vector2(80, 80)
-				#texture_button.pressed.connect(on_item_icon_clicked.bind(item.item_name))
+				texture_button.stretch_mode = TextureButton.STRETCH_SCALE	
 				texture_button.pressed.connect(on_item_icon_clicked.bind(key))
 				texture_button.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 				texture_button.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
-				
+				texture_buttons_by_collection[collection_name].append(texture_button)
 				grid_container.add_child(texture_button)
 
 				var nine_patch: NinePatchRect = NinePatchRect.new()
@@ -651,6 +673,7 @@ func reload_all_items() -> void:
 				texture_button.add_child(nine_patch)
 
 	select_collection(0)
+	update_visible_collection_buttons()
 
 	# Info blurb
 	var _num_populated_collections: int = 0
@@ -662,6 +685,49 @@ func reload_all_items() -> void:
 		_total_items += items_by_collection[key].size()
 
 	print("[SceneBuilderDock] Ready with %s collections and %s items" % [str(_num_populated_collections), str(_total_items)])
+
+func _on_grid_resized() -> void:
+	for grid_container : GridContainer in grid_containers: 
+		grid_container.visible = false
+		if update_visible_collection_buttons_timer.is_stopped():
+			update_visible_collection_buttons_timer.start()
+
+func update_visible_collection_buttons() -> void:
+	if collection_names.size() <= selected_collection_index:
+		return
+	
+	var collection_name: String = collection_names[selected_collection_index]
+	
+	if collection_name == "":
+		return
+	
+	if not collection_name in texture_buttons_by_collection:
+		return
+	
+	var grid_container: GridContainer = grid_containers[selected_collection_index]
+	if grid_container == null:
+		return
+
+	var scroll_container = grid_container.get_parent()
+	var available_width = scroll_container.size.x
+	
+	if scroll_container.get_v_scroll_bar() and scroll_container.get_v_scroll_bar().visible:
+			available_width -= scroll_container.get_v_scroll_bar().size.x
+	
+	if available_width <= 0:
+		available_width = scene_builder_dock.size.x
+
+	var num_columns = max(1, floor(available_width / 80))
+	var h_separation = grid_container.get_theme_constant("h_separation")
+	var total_separation = h_separation * (num_columns - 1)
+	var button_width = (available_width - total_separation) / num_columns
+
+	for button: TextureButton in texture_buttons_by_collection[collection_name]:
+		button.custom_minimum_size = Vector2(button_width,button_width)
+
+	grid_container.columns = num_columns
+	grid_container.queue_sort()
+	grid_container.visible = true
 
 func update_world_3d() -> bool:
 	var new_scene_root = EditorInterface.get_edited_scene_root()
@@ -689,7 +755,7 @@ func update_world_3d() -> bool:
 
 func disable_hotkeys() -> void:
 	config.disable_hotkeys = btn_disable_hotkeys.button_pressed
-	var config_path = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_config.tres")
+	var config_path: String = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_config.tres")
 	if config_path != "":
 		ResourceSaver.save(config, config_path)
 		print("[SceneBuilderDock] Hotkeys ", "disabled" if btn_disable_hotkeys.button_pressed else "enabled")
@@ -810,9 +876,9 @@ func _end_drag_rotation() -> void:
 func load_items_from_collection_folder_on_disk(_collection_name: String):
 	print("[SceneBuilderDock] Collecting items from collection folder")
 
-	var items = {}
-	var ordered_item_keys = []
-	var file_paths = []  #
+	var items: Dictionary[Variant, Variant] = {}
+	var ordered_item_keys: Array[Variant] = []
+	var file_paths: Array[Variant]        = []
 
 	var dir = DirAccess.open(config.root_dir + _collection_name)
 	if dir:
@@ -843,11 +909,11 @@ func load_items_from_collection_folder_on_disk(_collection_name: String):
 	ordered_keys_by_collection[_collection_name] = ordered_item_keys
 
 func get_all_node_names(_node) -> Array[String]:
-	var _all_node_names = []
+	var _all_node_names: Array[Variant] = []
 	for _child in _node.get_children():
 		_all_node_names.append(_child.name)
 		if _child.get_child_count() > 0:
-			var _result = get_all_node_names(_child)
+			var _result: Array[String] = get_all_node_names(_child)
 			for _item in _result:
 				_all_node_names.append(_item)
 	return _all_node_names
@@ -858,10 +924,10 @@ func instantiate_selected_item_at_position() -> void:
 		return
 
 	populate_preview_instance_rid_array(preview_instance)
-	var result = perform_raycast_with_exclusion(preview_instance_rid_array)
+	var result: Dictionary = perform_raycast_with_exclusion(preview_instance_rid_array)
 
 	if result and result.position:
-		var instance = get_instance_from_path(selected_item.uid)
+		var instance: Node3D = get_instance_from_path(selected_item.uid)
 		if selected_parent_node:
 			selected_parent_node.add_child(instance)
 		else:
@@ -918,8 +984,8 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	# Calculate plane intersection
 	var plane = Plane(Vector3.UP, spinbox_plane_y_pos.value)
 	var ray_direction = (end - origin).normalized()
-	var plane_intersection = plane.intersects_ray(origin, ray_direction)
-	var plane_result = {}
+	var plane_intersection                         = plane.intersects_ray(origin, ray_direction)
+	var plane_result: Dictionary[Variant, Variant] = {}
 	plane_result.position = plane_intersection
 
 	if plane_result.position == null:
@@ -1047,12 +1113,15 @@ func refresh_collection_names() -> void:
 						else:
 							printerr("[SceneBuilderDock] Directory exists, but contains no items: " + _name)
 						dir.list_dir_end()
-					else:
-						printerr("[SceneBuilderDock] Collection directory does not exist: " + _name)
+					else:						
+						printerr("[SceneBuilderDock] Collection directory does not exist: " + _name)						
+						DirAccess.make_dir_absolute(config.root_dir + _name)
+						printerr("[SceneBuilderDock] Created Collection directory: ", _name)
+			
 			collection_names = new_collection_names
 
 			for i in range(num_collections):
-				var collection_name = collection_names[i]
+				var collection_name: String = collection_names[i]
 				if collection_name == "":
 					collection_name = " "
 				btns_collection_tabs[i].text = collection_name
@@ -1068,7 +1137,7 @@ func refresh_collection_names() -> void:
 
 # ---- Shortcut ----------------------------------------------------------------
 
-func place_fence():
+func place_fence() -> void:
 	var selection: EditorSelection = EditorInterface.get_selection()
 	var selected_nodes: Array[Node] = selection.get_selected_nodes()
 
@@ -1098,15 +1167,15 @@ func place_fence():
 		var basis: Basis = transform.basis.rotated(Vector3(0, 1, 0), deg_to_rad(spinbox_y_offset.value))
 
 		var chosen_piece_name: String = fence_piece_names[randi() % fence_piece_names.size()]
-		var chosen_piece = items_by_collection[selected_collection_name][chosen_piece_name]
-		var instance = get_instance_from_path(chosen_piece.scene_path)
+		var chosen_piece     = items_by_collection[selected_collection_name][chosen_piece_name]
+		var instance: Node3D = get_instance_from_path(chosen_piece.scene_path)
 
 		undo_redo.add_do_method(scene_root, "add_child", instance)
 		undo_redo.add_do_method(instance, "set_owner", scene_root)
 		undo_redo.add_do_method(instance, "set_global_transform", Transform3D(
 			basis.rotated(Vector3(1, 0, 0), randf() * deg_to_rad(spinbox_jitter_x.value))
-				 .rotated(Vector3(0, 1, 0), randf() * deg_to_rad(spinbox_jitter_y.value))
-				 .rotated(Vector3(0, 0, 1), randf() * deg_to_rad(spinbox_jitter_z.value)),
+				.rotated(Vector3(0, 1, 0), randf() * deg_to_rad(spinbox_jitter_y.value))
+				.rotated(Vector3(0, 0, 1), randf() * deg_to_rad(spinbox_jitter_z.value)),
 			position
 		))
 
@@ -1220,8 +1289,8 @@ func start_transform_mode(mode: TransformMode) -> void:
 			original_preview_position = preview_instance.global_position
 		TransformMode.ROTATION_X, TransformMode.ROTATION_Y, TransformMode.ROTATION_Z:
 			if checkbox_snap_enabled.button_pressed:
-				var current_rotation = preview_instance.basis.get_euler()
-				var snapped_rotation = snap_rotation_to_grid(current_rotation)
+				var current_rotation          = preview_instance.basis.get_euler()
+				var snapped_rotation: Vector3 = snap_rotation_to_grid(current_rotation)
 				preview_instance.rotation = snapped_rotation
 				original_preview_basis = preview_instance.basis
 			else:
@@ -1232,6 +1301,8 @@ func start_transform_mode(mode: TransformMode) -> void:
 		TransformMode.SCALE:
 			original_preview_scale = preview_instance.scale
 			scale_offset = 0
+		TransformMode.NONE:
+			pass	
 	
 	reset_indicators()
 	
@@ -1244,7 +1315,9 @@ func start_transform_mode(mode: TransformMode) -> void:
 			lbl_indicator_z.self_modulate = Color.GREEN
 		TransformMode.SCALE:
 			lbl_indicator_scale.self_modulate = Color.GREEN
-
+		TransformMode.NONE:
+			pass
+			
 func get_icon(collection_name: String, item_name: String) -> Texture:
 	var icon_path: String = "res://Data/SceneBuilderCollections/%s/Thumbnail/%s.png" % [collection_name, item_name]
 	var tex: Texture = load(icon_path) as Texture
@@ -1276,8 +1349,6 @@ func get_instance_from_path(_uid: String) -> Node3D:
 	else:
 		printerr("[SceneBuilderDock] Path does not exist: ", path)
 	return null
-
-# --
 
 func update_config(_config: SceneBuilderConfig) -> void:
 	config = _config
