@@ -29,14 +29,15 @@ enum SceneCommands
 }
 
 func _unhandled_input(event: InputEvent):
+	
 	if config.disable_hotkeys:
 		return
 	
 	if event is InputEventKey:
 		if event.is_pressed() and !event.is_echo():
-
 			if event.alt_pressed:
-				match event.keycode:
+				
+				match event.physical_keycode:
 					config.alphabetize_nodes:
 						alphabetize_nodes()
 					config.change_places:
@@ -69,9 +70,9 @@ func _unhandled_input(event: InputEvent):
 						temporary_debug()
 
 			elif event.ctrl_pressed:
-				if event.keycode == KEY_RIGHT:
+				if event.physical_keycode == KEY_RIGHT:
 					select_children()
-				elif event.keycode == KEY_LEFT:
+				elif event.physical_keycode == KEY_LEFT:
 					select_parents()
 
 func _enter_tree():

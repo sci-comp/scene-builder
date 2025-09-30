@@ -406,7 +406,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 				
 				if event.shift_pressed:
 					
-					if event.keycode == KEY_1:
+					if event.physical_keycode == KEY_1:
 						
 						if is_transform_mode_enabled():
 							if current_transform_mode == TransformMode.POSITION_X:
@@ -417,7 +417,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						else:
 							start_transform_mode(TransformMode.POSITION_X)
 					
-					elif event.keycode == KEY_2:
+					elif event.physical_keycode == KEY_2:
 						if is_transform_mode_enabled():
 							if current_transform_mode == TransformMode.POSITION_Y:
 								end_transform_mode()
@@ -427,7 +427,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						else:
 							start_transform_mode(TransformMode.POSITION_Y)
 					
-					elif event.keycode == KEY_3:
+					elif event.physical_keycode == KEY_3:
 						if is_transform_mode_enabled():
 							if current_transform_mode == TransformMode.POSITION_Z:
 								end_transform_mode()
@@ -439,7 +439,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 				
 				else:
 					
-					if event.keycode == KEY_1:
+					if event.physical_keycode == KEY_1:
 						if is_transform_mode_enabled():
 							if current_transform_mode == TransformMode.ROTATION_X:
 								end_transform_mode()
@@ -449,7 +449,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						else:
 							start_transform_mode(TransformMode.ROTATION_X)
 					
-					elif event.keycode == KEY_2:
+					elif event.physical_keycode == KEY_2:
 						if is_transform_mode_enabled():
 							if current_transform_mode == TransformMode.ROTATION_Y:
 								end_transform_mode()
@@ -459,7 +459,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						else:
 							start_transform_mode(TransformMode.ROTATION_Y)
 					
-					elif event.keycode == KEY_3:
+					elif event.physical_keycode == KEY_3:
 						if is_transform_mode_enabled():
 							if current_transform_mode == TransformMode.ROTATION_Z:
 								end_transform_mode()
@@ -469,7 +469,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						else:
 							start_transform_mode(TransformMode.ROTATION_Z)
 					
-					elif event.keycode == KEY_4:
+					elif event.physical_keycode == KEY_4:
 						if is_transform_mode_enabled():
 							if current_transform_mode == TransformMode.SCALE:
 								end_transform_mode()
@@ -479,32 +479,32 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						else:
 							start_transform_mode(TransformMode.SCALE)
 					
-					elif event.keycode == KEY_5:
+					elif event.physical_keycode == KEY_5:
 						if is_transform_mode_enabled():
 							end_transform_mode()
 						reroll_preview_instance_transform()
 				
-				if event.keycode == KEY_ESCAPE:
+				if event.physical_keycode == KEY_ESCAPE:
 					end_placement_mode()
 			
 			if placement_mode_enabled:
 			
 				if event.shift_pressed:
-					if event.keycode == KEY_LEFT:
+					if event.physical_keycode == KEY_LEFT:
 						select_previous_item()
-					elif event.keycode == KEY_RIGHT:
+					elif event.physical_keycode == KEY_RIGHT:
 						select_next_item()
 				
 				if event.alt_pressed:
-					if event.keycode == KEY_LEFT:
+					if event.physical_keycode == KEY_LEFT:
 						select_previous_collection()
-					elif event.keycode == KEY_RIGHT:
+					elif event.physical_keycode == KEY_RIGHT:
 						select_next_collection()
 				
-				elif event.keycode == KEY_BRACKETLEFT:
+				elif event.physical_keycode == KEY_BRACKETLEFT:
 					preview_instance.rotate_y(deg_to_rad(-90))
 				
-				elif event.keycode == KEY_BRACKETRIGHT:
+				elif event.physical_keycode == KEY_BRACKETRIGHT:
 					preview_instance.rotate_y(deg_to_rad(90))
 
 	return EditorPlugin.AFTER_GUI_INPUT_PASS
