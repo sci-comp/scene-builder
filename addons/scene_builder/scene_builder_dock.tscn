@@ -21,19 +21,26 @@ offset_right = 348.0
 grow_vertical = 2
 size_flags_vertical = 3
 
-[node name="Collection" type="VBoxContainer" parent="."]
+[node name="PaletteContainer" type="TabContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+current_tab = 0
 
-[node name="Panel" type="PanelContainer" parent="Collection"]
+[node name="Palette 1" type="VBoxContainer" parent="PaletteContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_tab_index = 0
+
+[node name="Panel" type="PanelContainer" parent="PaletteContainer/Palette 1"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_rn2d1")
 
-[node name="Grid" type="GridContainer" parent="Collection/Panel"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/Panel"]
 layout_mode = 2
 columns = 6
 
-[node name="1" type="Button" parent="Collection/Panel/Grid"]
+[node name="1" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -43,7 +50,7 @@ text = "1"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="2" type="Button" parent="Collection/Panel/Grid"]
+[node name="2" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -52,7 +59,7 @@ text = "2"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="3" type="Button" parent="Collection/Panel/Grid"]
+[node name="3" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -61,7 +68,7 @@ text = "3"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="4" type="Button" parent="Collection/Panel/Grid"]
+[node name="4" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -70,7 +77,7 @@ text = "4"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="5" type="Button" parent="Collection/Panel/Grid"]
+[node name="5" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -79,7 +86,7 @@ text = "5"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="6" type="Button" parent="Collection/Panel/Grid"]
+[node name="6" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -88,7 +95,7 @@ text = "6"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="7" type="Button" parent="Collection/Panel/Grid"]
+[node name="7" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -97,7 +104,7 @@ text = "7"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="8" type="Button" parent="Collection/Panel/Grid"]
+[node name="8" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -106,7 +113,7 @@ text = "8"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="9" type="Button" parent="Collection/Panel/Grid"]
+[node name="9" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -115,7 +122,7 @@ text = "9"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="10" type="Button" parent="Collection/Panel/Grid"]
+[node name="10" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -124,7 +131,7 @@ text = "10"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="11" type="Button" parent="Collection/Panel/Grid"]
+[node name="11" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -133,7 +140,7 @@ text = "11"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="12" type="Button" parent="Collection/Panel/Grid"]
+[node name="12" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -142,7 +149,7 @@ text = "12"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="13" type="Button" parent="Collection/Panel/Grid"]
+[node name="13" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -151,7 +158,7 @@ text = "13"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="14" type="Button" parent="Collection/Panel/Grid"]
+[node name="14" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -160,7 +167,7 @@ text = "14"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="15" type="Button" parent="Collection/Panel/Grid"]
+[node name="15" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -169,7 +176,7 @@ text = "15"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="16" type="Button" parent="Collection/Panel/Grid"]
+[node name="16" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -178,7 +185,7 @@ text = "16"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="17" type="Button" parent="Collection/Panel/Grid"]
+[node name="17" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -187,7 +194,7 @@ text = "17"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="18" type="Button" parent="Collection/Panel/Grid"]
+[node name="18" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -196,7 +203,7 @@ text = "18"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="19" type="Button" parent="Collection/Panel/Grid"]
+[node name="19" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -205,7 +212,7 @@ text = "19"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="20" type="Button" parent="Collection/Panel/Grid"]
+[node name="20" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -214,7 +221,7 @@ text = "20"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="21" type="Button" parent="Collection/Panel/Grid"]
+[node name="21" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -223,7 +230,7 @@ text = "21"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="22" type="Button" parent="Collection/Panel/Grid"]
+[node name="22" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -232,7 +239,7 @@ text = "22"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="23" type="Button" parent="Collection/Panel/Grid"]
+[node name="23" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -241,7 +248,7 @@ text = "23"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="24" type="Button" parent="Collection/Panel/Grid"]
+[node name="24" type="Button" parent="PaletteContainer/Palette 1/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 11
@@ -250,319 +257,1970 @@ text = "24"
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="HSeparator3" type="HSeparator" parent="Collection"]
+[node name="HSeparator3" type="HSeparator" parent="PaletteContainer/Palette 1"]
 layout_mode = 2
 
-[node name="TabContainer" type="TabContainer" parent="Collection"]
+[node name="TabContainer" type="TabContainer" parent="PaletteContainer/Palette 1"]
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 tabs_visible = false
 
-[node name="1" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="1" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 0
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/1"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/1"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="2" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="2" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 1
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/2"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/2"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="3" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="3" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 2
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/3"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/3"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="4" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="4" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 3
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/4"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/4"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="5" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="5" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 4
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/5"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/5"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="6" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="6" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 5
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/6"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/6"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="7" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="7" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 6
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/7"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/7"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="8" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="8" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 7
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/8"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/8"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="9" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="9" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 8
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/9"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/9"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="10" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="10" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 9
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/10"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/10"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="11" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="11" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 10
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/11"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/11"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="12" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="12" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 11
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/12"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/12"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="13" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="13" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 12
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/13"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/13"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="14" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="14" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 13
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/14"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/14"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="15" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="15" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 14
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/15"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/15"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="16" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="16" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 15
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/16"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/16"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="17" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="17" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 16
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/17"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/17"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="18" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="18" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 17
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/18"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/18"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="19" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="19" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 18
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/19"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/19"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="20" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="20" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 19
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/20"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/20"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="21" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="21" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 20
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/21"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/21"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="22" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="22" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 21
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/22"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/22"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="23" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="23" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 22
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/23"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/23"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="24" type="ScrollContainer" parent="Collection/TabContainer"]
+[node name="24" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 metadata/_tab_index = 23
 
-[node name="Grid" type="GridContainer" parent="Collection/TabContainer/24"]
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 1/TabContainer/24"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="Palette 2" type="VBoxContainer" parent="PaletteContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_tab_index = 1
+
+[node name="Panel" type="PanelContainer" parent="PaletteContainer/Palette 2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rn2d1")
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/Panel"]
+layout_mode = 2
+columns = 6
+
+[node name="1" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+button_pressed = true
+text = "1"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="2" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "2"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="3" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "3"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="4" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "4"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="5" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "5"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="6" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "6"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="7" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "7"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="8" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "8"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="9" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "9"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="10" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "10"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="11" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "11"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="12" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "12"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="13" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "13"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="14" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "14"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="15" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "15"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="16" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "16"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="17" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "17"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="18" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "18"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="19" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "19"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="20" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "20"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="21" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "21"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="22" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "22"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="23" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "23"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="24" type="Button" parent="PaletteContainer/Palette 2/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "24"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="HSeparator3" type="HSeparator" parent="PaletteContainer/Palette 2"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="PaletteContainer/Palette 2"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+tabs_visible = false
+
+[node name="1" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 0
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/1"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="2" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 1
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="3" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 2
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/3"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="4" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 3
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/4"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="5" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 4
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/5"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="6" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 5
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/6"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="7" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 6
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/7"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="8" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 7
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/8"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="9" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 8
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/9"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="10" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 9
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/10"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="11" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 10
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/11"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="12" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 11
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/12"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="13" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 12
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/13"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="14" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 13
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/14"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="15" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 14
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/15"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="16" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 15
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/16"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="17" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 16
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/17"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="18" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 17
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/18"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="19" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 18
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/19"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="20" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 19
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/20"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="21" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 20
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/21"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="22" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 21
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/22"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="23" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 22
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/23"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="24" type="ScrollContainer" parent="PaletteContainer/Palette 2/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 23
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/24"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="Palette 3" type="VBoxContainer" parent="PaletteContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_tab_index = 2
+
+[node name="Panel" type="PanelContainer" parent="PaletteContainer/Palette 3"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rn2d1")
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/Panel"]
+layout_mode = 2
+columns = 6
+
+[node name="1" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+button_pressed = true
+text = "1"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="2" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "2"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="3" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "3"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="4" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "4"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="5" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "5"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="6" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "6"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="7" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "7"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="8" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "8"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="9" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "9"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="10" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "10"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="11" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "11"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="12" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "12"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="13" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "13"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="14" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "14"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="15" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "15"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="16" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "16"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="17" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "17"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="18" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "18"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="19" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "19"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="20" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "20"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="21" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "21"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="22" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "22"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="23" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "23"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="24" type="Button" parent="PaletteContainer/Palette 3/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "24"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="HSeparator3" type="HSeparator" parent="PaletteContainer/Palette 3"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="PaletteContainer/Palette 3"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+tabs_visible = false
+
+[node name="1" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 0
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/1"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="2" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 1
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="3" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 2
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/3"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="4" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 3
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/4"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="5" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 4
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/5"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="6" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 5
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/6"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="7" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 6
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/7"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="8" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 7
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/8"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="9" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 8
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/9"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="10" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 9
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/10"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="11" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 10
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/11"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="12" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 11
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/12"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="13" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 12
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/13"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="14" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 13
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/14"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="15" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 14
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/15"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="16" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 15
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/16"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="17" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 16
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/17"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="18" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 17
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/18"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="19" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 18
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/19"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="20" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 19
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/20"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="21" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 20
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/21"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="22" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 21
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/22"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="23" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 22
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/23"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="24" type="ScrollContainer" parent="PaletteContainer/Palette 3/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 23
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/24"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="Palette 4" type="VBoxContainer" parent="PaletteContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_tab_index = 3
+
+[node name="Panel" type="PanelContainer" parent="PaletteContainer/Palette 4"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rn2d1")
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/Panel"]
+layout_mode = 2
+columns = 6
+
+[node name="1" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+button_pressed = true
+text = "1"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="2" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "2"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="3" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "3"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="4" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "4"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="5" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "5"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="6" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "6"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="7" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "7"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="8" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "8"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="9" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "9"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="10" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "10"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="11" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "11"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="12" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "12"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="13" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "13"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="14" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "14"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="15" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "15"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="16" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "16"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="17" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "17"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="18" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "18"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="19" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "19"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="20" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "20"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="21" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "21"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="22" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "22"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="23" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "23"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="24" type="Button" parent="PaletteContainer/Palette 4/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = "24"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="HSeparator3" type="HSeparator" parent="PaletteContainer/Palette 4"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="PaletteContainer/Palette 4"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+tabs_visible = false
+
+[node name="1" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 0
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/1"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="2" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 1
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="3" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 2
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/3"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="4" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 3
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/4"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="5" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 4
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/5"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="6" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 5
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/6"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="7" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 6
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/7"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="8" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 7
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/8"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="9" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 8
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/9"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="10" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 9
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/10"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="11" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 10
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/11"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="12" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 11
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/12"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="13" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 12
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/13"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="14" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 13
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/14"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="15" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 14
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/15"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="16" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 15
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/16"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="17" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 16
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/17"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="18" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 17
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/18"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="19" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 18
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/19"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="20" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 19
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/20"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="21" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 20
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/21"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="22" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 21
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/22"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="23" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 22
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/23"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="24" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 23
+
+[node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/24"]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
