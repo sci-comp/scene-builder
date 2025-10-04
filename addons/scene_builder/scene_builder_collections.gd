@@ -7,6 +7,7 @@ class_name CollectionNames
 @export var palette_name_2: String = "Palette 2"
 @export var palette_name_3: String = "Palette 3"
 @export var palette_name_4: String = "Palette 4"
+@export var palette_name_5: String = "Palette 5"
 
 # ===== PALETTE 1 =====
 
@@ -246,3 +247,63 @@ class_name CollectionNames
 @export var p4_font_color_22: Color = Color.WHITE
 @export var p4_font_color_23: Color = Color.WHITE
 @export var p4_font_color_24: Color = Color.WHITE
+
+# ===== PALETTE 5 =====
+
+@export_category("Palette 5")
+
+@export_group("Row #1")
+@export var p5_name_01: String = ""
+@export var p5_name_02: String = ""
+@export var p5_name_03: String = ""
+@export var p5_name_04: String = ""
+@export var p5_name_05: String = ""
+@export var p5_name_06: String = ""
+@export var p5_font_color_01: Color = Color.WHITE
+@export var p5_font_color_02: Color = Color.WHITE
+@export var p5_font_color_03: Color = Color.WHITE
+@export var p5_font_color_04: Color = Color.WHITE
+@export var p5_font_color_05: Color = Color.WHITE
+@export var p5_font_color_06: Color = Color.WHITE
+
+@export_group("Row #2")
+@export var p5_name_07: String = ""
+@export var p5_name_08: String = ""
+@export var p5_name_09: String = ""
+@export var p5_name_10: String = ""
+@export var p5_name_11: String = ""
+@export var p5_name_12: String = ""
+@export var p5_font_color_07: Color = Color.WHITE
+@export var p5_font_color_08: Color = Color.WHITE
+@export var p5_font_color_09: Color = Color.WHITE
+@export var p5_font_color_10: Color = Color.WHITE
+@export var p5_font_color_11: Color = Color.WHITE
+@export var p5_font_color_12: Color = Color.WHITE
+
+@export_group("Row #3")
+@export var p5_name_13: String = ""
+@export var p5_name_14: String = ""
+@export var p5_name_15: String = ""
+@export var p5_name_16: String = ""
+@export var p5_name_17: String = ""
+@export var p5_name_18: String = ""
+@export var p5_font_color_13: Color = Color.WHITE
+@export var p5_font_color_14: Color = Color.WHITE
+@export var p5_font_color_15: Color = Color.WHITE
+@export var p5_font_color_16: Color = Color.WHITE
+@export var p5_font_color_17: Color = Color.WHITE
+@export var p5_font_color_18: Color = Color.WHITE
+
+@export_group("Row #4")
+@export var p5_name_19: String = ""
+@export var p5_name_20: String = ""
+@export var p5_name_21: String = ""
+@export var p5_name_22: String = ""
+@export var p5_name_23: String = ""
+@export var p5_name_24: String = ""
+@export var p5_font_color_19: Color = Color.WHITE
+@export var p5_font_color_20: Color = Color.WHITE
+@export var p5_font_color_21: Color = Color.WHITE
+@export var p5_font_color_22: Color = Color.WHITE
+@export var p5_font_color_23: Color = Color.WHITE
+@export var p5_font_color_24: Color = Color.WHITE

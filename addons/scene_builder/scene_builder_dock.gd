@@ -10,7 +10,7 @@ var path_to_collection_names: String
 
 # Constants
 var num_collections: int = 24
-var num_palettes: int = 4
+var num_palettes: int = 5
 
 # Palette state
 var current_palette_index: int = 0
@@ -1025,6 +1025,7 @@ func refresh_collection_names() -> void:
 		palette_container.set_tab_title(1, _names.palette_name_2)
 		palette_container.set_tab_title(2, _names.palette_name_3)
 		palette_container.set_tab_title(3, _names.palette_name_4)
+		palette_container.set_tab_title(4, _names.palette_name_5)
 		
 		all_collection_names.clear()
 		all_collection_colors.clear()
@@ -1069,8 +1070,18 @@ func refresh_collection_names() -> void:
 			_names.p4_font_color_13, _names.p4_font_color_14, _names.p4_font_color_15, _names.p4_font_color_16, _names.p4_font_color_17, _names.p4_font_color_18,
 			_names.p4_font_color_19, _names.p4_font_color_20, _names.p4_font_color_21, _names.p4_font_color_22, _names.p4_font_color_23, _names.p4_font_color_24]
 		
-		all_collection_names = [p1_names, p2_names, p3_names, p4_names]
-		all_collection_colors = [p1_colors, p2_colors, p3_colors, p4_colors]
+		# Palette 5
+		var p5_names: Array[String] = [_names.p5_name_01, _names.p5_name_02, _names.p5_name_03, _names.p5_name_04, _names.p5_name_05, _names.p5_name_06,
+			_names.p5_name_07, _names.p5_name_08, _names.p5_name_09, _names.p5_name_10, _names.p5_name_11, _names.p5_name_12,
+			_names.p5_name_13, _names.p5_name_14, _names.p5_name_15, _names.p5_name_16, _names.p5_name_17, _names.p5_name_18,
+			_names.p5_name_19, _names.p5_name_20, _names.p5_name_21, _names.p5_name_22, _names.p5_name_23, _names.p5_name_24]
+		var p5_colors: Array[Color] = [_names.p5_font_color_01, _names.p5_font_color_02, _names.p5_font_color_03, _names.p5_font_color_04, _names.p5_font_color_05, _names.p5_font_color_06,
+			_names.p5_font_color_07, _names.p5_font_color_08, _names.p5_font_color_09, _names.p5_font_color_10, _names.p5_font_color_11, _names.p5_font_color_12,
+			_names.p5_font_color_13, _names.p5_font_color_14, _names.p5_font_color_15, _names.p5_font_color_16, _names.p5_font_color_17, _names.p5_font_color_18,
+			_names.p5_font_color_19, _names.p5_font_color_20, _names.p5_font_color_21, _names.p5_font_color_22, _names.p5_font_color_23, _names.p5_font_color_24]
+		
+		all_collection_names = [p1_names, p2_names, p3_names, p4_names, p5_names]
+		all_collection_colors = [p1_colors, p2_colors, p3_colors, p4_colors, p5_colors]
 		
 		# Set current collection_names to palette 0
 		collection_names = all_collection_names[current_palette_index]
