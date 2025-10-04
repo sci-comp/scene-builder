@@ -10,6 +10,12 @@ var path_to_collection_names: String
 
 # Constants
 var num_collections: int = 24
+var num_palettes: int = 4
+
+# Palette state
+var current_palette_index: int = 0
+var all_collection_names: Array[Array] = []  # 6 arrays of 24 names each
+var all_collection_colors: Array[Array] = []  # 6 arrays of 24 colors each
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var toolbox: SceneBuilderToolbox = SceneBuilderToolbox.new()
@@ -21,8 +27,10 @@ var btn_use_local_space: Button
 
 # SceneBuilderDock controls
 var scene_builder_dock: VBoxContainer
-var tab_container: TabContainer
-var btns_collection_tabs: Array = [] # set in _enter_tree()
+var tab_containers: Array[TabContainer] = []  # One per palette
+var btns_collection_tabs_by_palette: Array[Array] = []  # 6 arrays of 24 buttons
+var tab_container: TabContainer  # Current active tab container
+var btns_collection_tabs: Array = []  # Current active buttons (reference to one palette)
 # Options
 var btn_use_surface_normal: CheckButton
 var btn_surface_normal_x: CheckBox
@@ -151,13 +159,6 @@ func _enter_tree() -> void:
 	
 	add_control_to_dock(EditorPlugin.DOCK_SLOT_RIGHT_UL, scene_builder_dock)
 	
-	# Collection tabs
-	tab_container = scene_builder_dock.get_node("Collection/TabContainer")
-	for i: int in range(num_collections):
-		var tab_button: Button = scene_builder_dock.get_node("Collection/Panel/Grid/%s" % str(i + 1))
-		tab_button.pressed.connect(select_collection.bind(i))
-		btns_collection_tabs.append(tab_button)
-	
 	# Options tab
 	btn_use_surface_normal = scene_builder_dock.get_node("%UseSurfaceNormal")
 	btn_surface_normal_x = scene_builder_dock.get_node("%Orientation/ButtonGroup/X")
@@ -220,6 +221,24 @@ func _enter_tree() -> void:
 	thumbnail_generator = SceneBuilderThumbnailGenerator.new()
 	add_child(thumbnail_generator)
 	
+	var palette_container: TabContainer = scene_builder_dock.get_node("%PaletteContainer")
+	palette_container.tab_changed.connect(on_palette_changed)
+
+	for palette_idx in range(num_palettes):
+		var tc: TabContainer = scene_builder_dock.get_node("%%PaletteContainer/Palette %d/TabContainer" % (palette_idx + 1))
+		tab_containers.append(tc)
+		
+		var palette_buttons: Array = []
+		for i in range(num_collections):
+			var btn: Button = scene_builder_dock.get_node("%%PaletteContainer/Palette %d/Panel/Grid/%s" % [palette_idx + 1, str(i + 1)])
+			btn.pressed.connect(select_collection.bind(i))
+			palette_buttons.append(btn)
+		btns_collection_tabs_by_palette.append(palette_buttons)
+
+	# Set current reference
+	btns_collection_tabs = btns_collection_tabs_by_palette[current_palette_index]
+	tab_container = tab_containers[current_palette_index]
+
 	#
 	call_deferred("_delayed_reload")
 	update_world_3d()
@@ -514,7 +533,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 
 
 func is_collection_populated(tab_index: int) -> bool:
-	var _collection_name: String = collection_names[tab_index]
+	var _collection_name: String = all_collection_names[current_palette_index][tab_index]
 	if _collection_name == "" or _collection_name == " ":
 		return false
 	else:
@@ -532,7 +551,7 @@ func select_collection(tab_index: int) -> void:
 		button.button_pressed = false
 	
 	tab_container.current_tab = tab_index
-	selected_collection_name = collection_names[tab_index]
+	selected_collection_name = all_collection_names[current_palette_index][tab_index]
 	selected_collection_index = tab_index
 	
 	if selected_collection_name == "" or selected_collection_name == " ":
@@ -616,71 +635,67 @@ func set_parent_node(node_path: NodePath) -> void:
 
 func reload_all_items() -> void:
 	print("[SceneBuilderDock] Freeing all texture buttons")
-	for i in range(1, num_collections + 1):
-		var grid_container: GridContainer = tab_container.get_node("%s/Grid" % i)
-		for _node in grid_container.get_children():
-			_node.queue_free()
+	
+	# Free all existing buttons from all palettes
+	for palette_idx in range(num_palettes):
+		var tc = tab_containers[palette_idx]
+		for i in range(1, num_collections + 1):
+			var grid_container: GridContainer = tc.get_node("%s/Grid" % i)
+			for _node in grid_container.get_children():
+				_node.queue_free()
 	
 	refresh_collection_names()
 	
 	print("[SceneBuilderDock] Loading all items from all collections")
-	var i = 0
-	for collection_name in collection_names:
-		i += 1
+	
+	# Load items for all palettes
+	for palette_idx in range(num_palettes):
+		var tc = tab_containers[palette_idx]
+		var palette_collection_names = all_collection_names[palette_idx]
 		
-		if collection_name != "" and collection_name != " ":			
-			var grid_container: GridContainer = tab_container.get_node("%s/Grid" % i)
+		for i in range(num_collections):
+			var collection_name = palette_collection_names[i]
 			
-			load_items_from_database(collection_name)
-			
-			item_highlighters_by_collection[collection_name] = {}
-			
-			for key: String in ordered_keys_by_collection[collection_name]:
-				var item_data: Dictionary = items_by_collection[collection_name][key]
-				var texture_button: TextureButton = TextureButton.new()
-				texture_button.toggle_mode = true
-				var uid = ResourceUID.text_to_id(item_data["uid"])
-				var has_uid = ResourceUID.has_id(uid)
-				if not has_uid:
-					print("[Debug] UID not found in registry")
-					continue
-				var scene_path = ResourceUID.get_id_path(uid)
-				var thumbnail = await thumbnail_generator.generate_thumbnail(scene_path)
-				texture_button.texture_normal = thumbnail
-				texture_button.tooltip_text = key
-				texture_button.ignore_texture_size = true
-				texture_button.stretch_mode = TextureButton.STRETCH_SCALE
-				texture_button.custom_minimum_size = Vector2(80, 80)
-				texture_button.pressed.connect(on_item_icon_clicked.bind(key))
-				texture_button.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-				texture_button.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
+			if collection_name != "" and collection_name != " ":
+				var grid_container: GridContainer = tc.get_node("%s/Grid" % (i + 1))
 				
-				grid_container.add_child(texture_button)
+				load_items_from_database(collection_name)
+				item_highlighters_by_collection[collection_name] = {}
 				
-				var nine_patch: NinePatchRect = NinePatchRect.new()
-				nine_patch.texture = CanvasTexture.new()
-				nine_patch.draw_center = false
-				nine_patch.set_anchors_preset(Control.PRESET_FULL_RECT)
-				nine_patch.patch_margin_left = 4
-				nine_patch.patch_margin_top = 4
-				nine_patch.patch_margin_right = 4
-				nine_patch.patch_margin_bottom = 4
-				nine_patch.self_modulate = Color("000000") # black  # 6a9d2e green
-				item_highlighters_by_collection[collection_name][key] = nine_patch
-				texture_button.add_child(nine_patch)
+				for key: String in ordered_keys_by_collection[collection_name]:
+					var item_data: Dictionary = items_by_collection[collection_name][key]
+					var texture_button: TextureButton = TextureButton.new()
+					texture_button.toggle_mode = true
+					var uid = ResourceUID.text_to_id(item_data["uid"])
+					if not ResourceUID.has_id(uid):
+						continue
+					var scene_path = ResourceUID.get_id_path(uid)
+					var thumbnail = await thumbnail_generator.generate_thumbnail(scene_path)
+					texture_button.texture_normal = thumbnail
+					texture_button.tooltip_text = key
+					texture_button.ignore_texture_size = true
+					texture_button.stretch_mode = TextureButton.STRETCH_SCALE
+					texture_button.custom_minimum_size = Vector2(80, 80)
+					texture_button.pressed.connect(on_item_icon_clicked.bind(key))
+					texture_button.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
+					texture_button.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
+					
+					grid_container.add_child(texture_button)
+					
+					var nine_patch: NinePatchRect = NinePatchRect.new()
+					nine_patch.texture = CanvasTexture.new()
+					nine_patch.draw_center = false
+					nine_patch.set_anchors_preset(Control.PRESET_FULL_RECT)
+					nine_patch.patch_margin_left = 4
+					nine_patch.patch_margin_top = 4
+					nine_patch.patch_margin_right = 4
+					nine_patch.patch_margin_bottom = 4
+					nine_patch.self_modulate = Color.BLACK
+					item_highlighters_by_collection[collection_name][key] = nine_patch
+					texture_button.add_child(nine_patch)
 	
 	select_collection(0)
-	
-	# Info blurb
-	var _num_populated_collections: int = 0
-	for collection_name in collection_names:
-		if collection_name != "":
-			_num_populated_collections += 1
-	var _total_items: int = 0
-	for key: String in items_by_collection.keys():
-		_total_items += items_by_collection[key].size()
-	
-	print("[SceneBuilderDock] Ready with %s collections and %s items" % [str(_num_populated_collections), str(_total_items)])
+	print("[SceneBuilderDock] Reload complete")
 
 
 func update_world_3d() -> bool:
@@ -715,8 +730,26 @@ func disable_hotkeys() -> void:
 		ResourceSaver.save(config, config_path)
 		print("[SceneBuilderDock] Hotkeys ", "disabled" if btn_disable_hotkeys.button_pressed else "enabled")
 
+func on_palette_changed(palette_index: int) -> void:
+	current_palette_index = palette_index
+	collection_names = all_collection_names[palette_index]
+	
+	btns_collection_tabs = btns_collection_tabs_by_palette[palette_index]
+	tab_container = tab_containers[palette_index]
+	
+	var current_colors = all_collection_colors[palette_index]
+	for i in range(num_collections):
+		var collection_name = collection_names[i]
+		if collection_name == "":
+			collection_name = " "
+		btns_collection_tabs[i].text = collection_name
+		btns_collection_tabs[i].add_theme_color_override("font_color", current_colors[i])
+	
+	select_collection(0)
+
 
 # ---- Helpers -----------------------------------------------------------------
+
 
 func align_up(node_basis, normal) -> Basis:
 	var result: Basis = Basis()
@@ -986,81 +1019,70 @@ func refresh_collection_names() -> void:
 	
 	var _names: CollectionNames = load(path_to_collection_names)
 	if _names != null:
-			var new_collection_names: Array[String] = []
-			var new_collection_font_colors: Array[Color] = []
+		# Set palette tab titles
+		var palette_container: TabContainer = scene_builder_dock.get_node("%PaletteContainer")
+		palette_container.set_tab_title(0, _names.palette_name_1)
+		palette_container.set_tab_title(1, _names.palette_name_2)
+		palette_container.set_tab_title(2, _names.palette_name_3)
+		palette_container.set_tab_title(3, _names.palette_name_4)
+		
+		all_collection_names.clear()
+		all_collection_colors.clear()
+		
+		# Palette 1
+		var p1_names: Array[String] = [_names.name_01, _names.name_02, _names.name_03, _names.name_04, _names.name_05, _names.name_06,
+			_names.name_07, _names.name_08, _names.name_09, _names.name_10, _names.name_11, _names.name_12,
+			_names.name_13, _names.name_14, _names.name_15, _names.name_16, _names.name_17, _names.name_18,
+			_names.name_19, _names.name_20, _names.name_21, _names.name_22, _names.name_23, _names.name_24]
+		var p1_colors: Array[Color] = [_names.font_color_01, _names.font_color_02, _names.font_color_03, _names.font_color_04, _names.font_color_05, _names.font_color_06,
+			_names.font_color_07, _names.font_color_08, _names.font_color_09, _names.font_color_10, _names.font_color_11, _names.font_color_12,
+			_names.font_color_13, _names.font_color_14, _names.font_color_15, _names.font_color_16, _names.font_color_17, _names.font_color_18,
+			_names.font_color_19, _names.font_color_20, _names.font_color_21, _names.font_color_22, _names.font_color_23, _names.font_color_24]
+		
+		# Palette 2
+		var p2_names: Array[String] = [_names.p2_name_01, _names.p2_name_02, _names.p2_name_03, _names.p2_name_04, _names.p2_name_05, _names.p2_name_06,
+			_names.p2_name_07, _names.p2_name_08, _names.p2_name_09, _names.p2_name_10, _names.p2_name_11, _names.p2_name_12,
+			_names.p2_name_13, _names.p2_name_14, _names.p2_name_15, _names.p2_name_16, _names.p2_name_17, _names.p2_name_18,
+			_names.p2_name_19, _names.p2_name_20, _names.p2_name_21, _names.p2_name_22, _names.p2_name_23, _names.p2_name_24]
+		var p2_colors: Array[Color] = [_names.p2_font_color_01, _names.p2_font_color_02, _names.p2_font_color_03, _names.p2_font_color_04, _names.p2_font_color_05, _names.p2_font_color_06,
+			_names.p2_font_color_07, _names.p2_font_color_08, _names.p2_font_color_09, _names.p2_font_color_10, _names.p2_font_color_11, _names.p2_font_color_12,
+			_names.p2_font_color_13, _names.p2_font_color_14, _names.p2_font_color_15, _names.p2_font_color_16, _names.p2_font_color_17, _names.p2_font_color_18,
+			_names.p2_font_color_19, _names.p2_font_color_20, _names.p2_font_color_21, _names.p2_font_color_22, _names.p2_font_color_23, _names.p2_font_color_24]
+		
+		# Palette 3
+		var p3_names: Array[String] = [_names.p3_name_01, _names.p3_name_02, _names.p3_name_03, _names.p3_name_04, _names.p3_name_05, _names.p3_name_06,
+			_names.p3_name_07, _names.p3_name_08, _names.p3_name_09, _names.p3_name_10, _names.p3_name_11, _names.p3_name_12,
+			_names.p3_name_13, _names.p3_name_14, _names.p3_name_15, _names.p3_name_16, _names.p3_name_17, _names.p3_name_18,
+			_names.p3_name_19, _names.p3_name_20, _names.p3_name_21, _names.p3_name_22, _names.p3_name_23, _names.p3_name_24]
+		var p3_colors: Array[Color] = [_names.p3_font_color_01, _names.p3_font_color_02, _names.p3_font_color_03, _names.p3_font_color_04, _names.p3_font_color_05, _names.p3_font_color_06,
+			_names.p3_font_color_07, _names.p3_font_color_08, _names.p3_font_color_09, _names.p3_font_color_10, _names.p3_font_color_11, _names.p3_font_color_12,
+			_names.p3_font_color_13, _names.p3_font_color_14, _names.p3_font_color_15, _names.p3_font_color_16, _names.p3_font_color_17, _names.p3_font_color_18,
+			_names.p3_font_color_19, _names.p3_font_color_20, _names.p3_font_color_21, _names.p3_font_color_22, _names.p3_font_color_23, _names.p3_font_color_24]
+		
+		# Palette 4
+		var p4_names: Array[String] = [_names.p4_name_01, _names.p4_name_02, _names.p4_name_03, _names.p4_name_04, _names.p4_name_05, _names.p4_name_06,
+			_names.p4_name_07, _names.p4_name_08, _names.p4_name_09, _names.p4_name_10, _names.p4_name_11, _names.p4_name_12,
+			_names.p4_name_13, _names.p4_name_14, _names.p4_name_15, _names.p4_name_16, _names.p4_name_17, _names.p4_name_18,
+			_names.p4_name_19, _names.p4_name_20, _names.p4_name_21, _names.p4_name_22, _names.p4_name_23, _names.p4_name_24]
+		var p4_colors: Array[Color] = [_names.p4_font_color_01, _names.p4_font_color_02, _names.p4_font_color_03, _names.p4_font_color_04, _names.p4_font_color_05, _names.p4_font_color_06,
+			_names.p4_font_color_07, _names.p4_font_color_08, _names.p4_font_color_09, _names.p4_font_color_10, _names.p4_font_color_11, _names.p4_font_color_12,
+			_names.p4_font_color_13, _names.p4_font_color_14, _names.p4_font_color_15, _names.p4_font_color_16, _names.p4_font_color_17, _names.p4_font_color_18,
+			_names.p4_font_color_19, _names.p4_font_color_20, _names.p4_font_color_21, _names.p4_font_color_22, _names.p4_font_color_23, _names.p4_font_color_24]
+		
+		all_collection_names = [p1_names, p2_names, p3_names, p4_names]
+		all_collection_colors = [p1_colors, p2_colors, p3_colors, p4_colors]
+		
+		# Set current collection_names to palette 0
+		collection_names = all_collection_names[current_palette_index]
 			
-			# Row 1
-			new_collection_names.append(_names.name_01)
-			new_collection_names.append(_names.name_02)
-			new_collection_names.append(_names.name_03)
-			new_collection_names.append(_names.name_04)
-			new_collection_names.append(_names.name_05)
-			new_collection_names.append(_names.name_06)
-			new_collection_font_colors.append(_names.font_color_01)
-			new_collection_font_colors.append(_names.font_color_02)
-			new_collection_font_colors.append(_names.font_color_03)
-			new_collection_font_colors.append(_names.font_color_04)
-			new_collection_font_colors.append(_names.font_color_05)
-			new_collection_font_colors.append(_names.font_color_06)
-			
-			# Row 2
-			new_collection_names.append(_names.name_07)
-			new_collection_names.append(_names.name_08)
-			new_collection_names.append(_names.name_09)
-			new_collection_names.append(_names.name_10)
-			new_collection_names.append(_names.name_11)
-			new_collection_names.append(_names.name_12)
-			new_collection_font_colors.append(_names.font_color_07)
-			new_collection_font_colors.append(_names.font_color_08)
-			new_collection_font_colors.append(_names.font_color_09)
-			new_collection_font_colors.append(_names.font_color_10)
-			new_collection_font_colors.append(_names.font_color_11)
-			new_collection_font_colors.append(_names.font_color_12)
-			
-			# Row 3
-			new_collection_names.append(_names.name_13)
-			new_collection_names.append(_names.name_14)
-			new_collection_names.append(_names.name_15)
-			new_collection_names.append(_names.name_16)
-			new_collection_names.append(_names.name_17)
-			new_collection_names.append(_names.name_18)
-			new_collection_font_colors.append(_names.font_color_13)
-			new_collection_font_colors.append(_names.font_color_14)
-			new_collection_font_colors.append(_names.font_color_15)
-			new_collection_font_colors.append(_names.font_color_16)
-			new_collection_font_colors.append(_names.font_color_17)
-			new_collection_font_colors.append(_names.font_color_18)
-			
-			# Row 4
-			new_collection_names.append(_names.name_19)
-			new_collection_names.append(_names.name_20)
-			new_collection_names.append(_names.name_21)
-			new_collection_names.append(_names.name_22)
-			new_collection_names.append(_names.name_23)
-			new_collection_names.append(_names.name_24)
-			new_collection_font_colors.append(_names.font_color_19)
-			new_collection_font_colors.append(_names.font_color_20)
-			new_collection_font_colors.append(_names.font_color_21)
-			new_collection_font_colors.append(_names.font_color_22)
-			new_collection_font_colors.append(_names.font_color_23)
-			new_collection_font_colors.append(_names.font_color_24)
-			
-			# Validate against database
-			for _name in new_collection_names:
-				if _name != "":
-					if database.has_collection(_name):
-						var item_count = database.get_item_names(_name).size()
-						print("[SceneBuilderDock] Collection '%s' has %d items" % [_name, item_count])
-			
-			collection_names = new_collection_names
-			
-			for i in range(num_collections):
-				var collection_name = collection_names[i]
-				if collection_name == "":
-					collection_name = " "
-				btns_collection_tabs[i].text = collection_name
-				btns_collection_tabs[i].add_theme_color_override("font_color", new_collection_font_colors[i])
-	
+		var current_colors = all_collection_colors[current_palette_index]
+		for i in range(num_collections):
+			var collection_name = collection_names[i]
+			if collection_name == "":
+				collection_name = " "
+			btns_collection_tabs[i].text = collection_name
+			btns_collection_tabs[i].add_theme_color_override("font_color", current_colors[i])
+		
 	else:
 		printerr("[SceneBuilderDock] An unknown file exists at location %s. A resource of type CollectionNames should exist here.".format(path_to_collection_names))
 		collection_names = Array()
