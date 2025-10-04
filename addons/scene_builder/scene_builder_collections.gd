@@ -2,6 +2,12 @@
 extends Resource
 class_name CollectionNames
 
+@export_category("Palette Names")
+@export var palette_name_1: String = "Palette 1"
+@export var palette_name_2: String = "Palette 2"
+@export var palette_name_3: String = "Palette 3"
+@export var palette_name_4: String = "Palette 4"
+
 # ===== PALETTE 1 =====
 
 @export_category("Palette 1")

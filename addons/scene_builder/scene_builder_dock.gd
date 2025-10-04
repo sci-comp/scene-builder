@@ -1019,6 +1019,13 @@ func refresh_collection_names() -> void:
 	
 	var _names: CollectionNames = load(path_to_collection_names)
 	if _names != null:
+		# Set palette tab titles
+		var palette_container: TabContainer = scene_builder_dock.get_node("%PaletteContainer")
+		palette_container.set_tab_title(0, _names.palette_name_1)
+		palette_container.set_tab_title(1, _names.palette_name_2)
+		palette_container.set_tab_title(2, _names.palette_name_3)
+		palette_container.set_tab_title(3, _names.palette_name_4)
+		
 		all_collection_names.clear()
 		all_collection_colors.clear()
 		
