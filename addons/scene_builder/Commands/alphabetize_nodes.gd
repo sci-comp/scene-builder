@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 ## Alphabetize children of selected nodes.
-## * Nodes will be sorted together, at the top of the heirarchy
+## * Nodes will be sorted together, at the top of the hierarchy
 ## * Node3Ds will be sorted together, below any Nodes
 
 func execute():

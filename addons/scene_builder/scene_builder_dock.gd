@@ -14,12 +14,12 @@ var num_palettes: int = 5
 
 # Palette state
 var current_palette_index: int = 0
-var all_collection_names: Array[Array] = []  # 6 arrays of 24 names each
-var all_collection_colors: Array[Array] = []  # 6 arrays of 24 colors each
+var all_collection_names: Array[Array] = []  # 5 arrays of 24 names each
+var all_collection_colors: Array[Array] = []  # 5 arrays of 24 colors each
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var toolbox: SceneBuilderToolbox = SceneBuilderToolbox.new()
-var undo_redo: EditorUndoRedoManager = get_undo_redo()
+var undo_redo: EditorUndoRedoManager
 
 # Godot controls
 var base_control: Control
@@ -28,7 +28,7 @@ var btn_use_local_space: Button
 # SceneBuilderDock controls
 var scene_builder_dock: VBoxContainer
 var tab_containers: Array[TabContainer] = []  # One per palette
-var btns_collection_tabs_by_palette: Array[Array] = []  # 6 arrays of 24 buttons
+var btns_collection_tabs_by_palette: Array[Array] = []  # 5 arrays of 24 buttons
 var tab_container: TabContainer  # Current active tab container
 var btns_collection_tabs: Array = []  # Current active buttons (reference to one palette)
 # Options
@@ -135,7 +135,8 @@ func _enter_tree() -> void:
 	path_to_collection_names = config.root_dir + "collection_names.tres"
 	
 	editor = get_editor_interface()
-	base_control = EditorInterface.get_base_control()
+	undo_redo = get_undo_redo()
+	base_control = editor.get_base_control()
 	
 	# Found using: https://github.com/Zylann/godot_editor_debugger_plugin
 	var _panel : Panel = get_editor_interface().get_base_control()
@@ -879,17 +880,6 @@ func load_items_from_database(_collection_name: String):
 		ordered_keys_by_collection[_collection_name] = []
 
 
-func get_all_node_names(_node) -> Array[String]:
-	var _all_node_names = []
-	for _child in _node.get_children():
-		_all_node_names.append(_child.name)
-		if _child.get_child_count() > 0:
-			var _result = get_all_node_names(_child)
-			for _item in _result:
-				_all_node_names.append(_item)
-	return _all_node_names
-
-
 func instantiate_selected_item_at_position() -> void:
 	if preview_instance == null or selected_item_data.is_empty():
 		printerr("[SceneBuilderDock] Preview instance or selected item is null")
@@ -964,7 +954,7 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	plane_result.position = plane_intersection
 	
 	if plane_result.position == null:
-		printerr("[SceneBuilderDocl] plane_result.position == null")
+		printerr("[SceneBuilderDock] plane_result.position == null")
 		return collision_result
 	
 	match option_plane_mode.selected:
@@ -1095,7 +1085,7 @@ func refresh_collection_names() -> void:
 			btns_collection_tabs[i].add_theme_color_override("font_color", current_colors[i])
 		
 	else:
-		printerr("[SceneBuilderDock] An unknown file exists at location %s. A resource of type CollectionNames should exist here.".format(path_to_collection_names))
+		printerr("[SceneBuilderDock] An unknown file exists at location %s. A resource of type CollectionNames should exist here." % path_to_collection_names)
 		collection_names = Array()
 		collection_names.resize(24)
 		collection_names.fill("")
@@ -1115,7 +1105,7 @@ func place_fence():
 		return
 	
 	if selected_nodes.size() != 1:
-		printerr("[SceneBuilderDock] Exactly one node sould be selected in the scene")
+		printerr("[SceneBuilderDock] Exactly one node should be selected in the scene")
 		return
 	
 	if not selected_nodes[0] is Path3D:
@@ -1178,8 +1168,6 @@ func reroll_preview_instance_transform() -> void:
 	else:
 		preview_instance.rotation = Vector3(0, 0, 0)
 		original_preview_basis = preview_instance.basis
-	
-	original_preview_basis = preview_instance.basis
 	
 	pos_offset_x = 0
 	pos_offset_y = 0

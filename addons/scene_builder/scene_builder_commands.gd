@@ -152,7 +152,7 @@ func change_places():
 	_instance.execute()
 
 func create_scene_builder_items():
-	var reusable_instance = preload("./Commands/create_scene_builder_items.gd").new()
+	reusable_instance = preload("./Commands/create_scene_builder_items.gd").new()
 	add_child(reusable_instance)
 	reusable_instance.done.connect(_on_reusable_instance_done)
 	reusable_instance.execute(config.root_dir)
