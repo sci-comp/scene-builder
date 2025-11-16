@@ -50,8 +50,8 @@ static func find_resource_with_dynamic_path(file_name: String) -> String:
 	
 	return ""
 
-static func get_all_node_names(_node):
-	var _all_node_names = []
+static func get_all_node_names(_node : Node) -> Array:
+	var _all_node_names : Array = []
 	for _child in _node.get_children():
 		_all_node_names.append(_child.name)
 		if _child.get_child_count() > 0:
@@ -60,16 +60,16 @@ static func get_all_node_names(_node):
 				_all_node_names.append(_item)
 	return _all_node_names
 
-static func increment_name_until_unique(new_name, all_names) -> String:
-	var idx = all_names.find_custom(func(s: String) -> bool: return s.begins_with(new_name))
-	var name_match = all_names[idx] if idx >= 0 else null	
-
-	if name_match:
-		var backup_name = new_name
-		var suffix_counter = 1
-		var increment_until = true
-		while (increment_until):
-			var _backup_name = backup_name + "-n" + str(suffix_counter)
+static func increment_name_until_unique(new_name : String, all_names : Array) -> String:
+	var idx : int = all_names.find_custom(func(s: String) -> bool: return s.begins_with(new_name))
+	var name_match :String = all_names[idx] if idx >= 0 else null
+	
+	if name_match != "":
+		var backup_name: String = new_name
+		var suffix_counter: int = 1
+		var increment_until: bool = true
+		while increment_until:
+			var _backup_name: String = backup_name + "-n" + str(suffix_counter)
 			if _backup_name in all_names:
 				suffix_counter += 1
 			else:
