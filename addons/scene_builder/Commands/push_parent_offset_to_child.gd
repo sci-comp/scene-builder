@@ -17,16 +17,18 @@ func execute():
 			for _child in parent.get_children():
 				if _child is Node3D:
 					var child: Node3D = _child;
-					var original_position = child.global_position
-					child_actions.append([child, original_position])
+					var original_global_position = child.global_position
+					var original_local_position = child.position
+					child_actions.append([child, original_global_position, original_local_position])
 
 			undo_redo.add_do_method(parent, "set_global_position", Vector3.ZERO)
 			undo_redo.add_undo_method(parent, "set_global_position", parent.global_position)
 
 			for action_data in child_actions:
 				var child = action_data[0]
-				var original_position = action_data[1]
-				undo_redo.add_do_method(child, "set_global_position", original_position)
-				undo_redo.add_undo_method(child, "set_global_position", original_position)
+				var original_global_position = action_data[1]
+				var original_local_position = action_data[2]
+				undo_redo.add_do_method(child, "set_global_position", original_global_position)
+				undo_redo.add_undo_method(child, "set_position", original_local_position)
 
 	undo_redo.commit_action()

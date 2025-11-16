@@ -231,4 +231,4 @@ func _on_ok_pressed():
 		ResourceSaver.save(texture_to_material[path], save_path)
 
 	popup_instance.queue_free()
-	emit_signal("done")
+	done.emit()

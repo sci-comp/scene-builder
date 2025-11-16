@@ -12,14 +12,16 @@ func execute():
 
 	undo_redo.create_action("Fix negative scaling")
 
-	for selected: Node3D in selected_nodes:
-
+	for selected in selected_nodes:
+		if not selected is Node3D:
+			continue
+		
 		var new_scale: Vector3 = selected.scale
 		if selected.scale.x < 0 || selected.scale.y < 0 || selected.scale.z < 0:
 			new_scale = abs(selected.scale)
 			print("[Fix Negative Scaling] Negative scale found for: ", selected.name)
-
+		
 		undo_redo.add_do_method(selected, "set_scale", new_scale)
 		undo_redo.add_undo_method(selected, "set_scale", selected.scale)
-
+	
 	undo_redo.commit_action()

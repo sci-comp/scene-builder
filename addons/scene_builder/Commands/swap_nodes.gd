@@ -20,44 +20,54 @@ func execute():
 	var selection: EditorSelection = EditorInterface.get_selection()
 	var selected_nodes: Array[Node] = selection.get_selected_nodes()
 	var selected_paths: PackedStringArray = EditorInterface.get_selected_paths()
-
+	
 	# Verify that only one FileSystem path is selected
 	if selected_paths.size() != 1:
 		print("[Swap Nodes] Please select exactly one PackedScene in the FileSystem.")
 		return
-
+	
 	# Verify that selected Filesystem item is a PackedScene
 	var selected_path = selected_paths[0]
 	var resource = load(selected_path)
 	if not resource or not resource is PackedScene:
 		print("[Swap Nodes] The selected path is not a PackedScene.")
 		return
-
+	
 	# Verify selected nodes
 	if selected_nodes.is_empty():
 		print("[Swap Nodes] Select at least one node in the Scene.")
 		return
-
+	
 	undo_redo.create_action("Swap selected nodes with a single selected node in FileSystem")
-
+	
 	for node in selected_nodes:
-		var instance: Node3D = resource.instantiate()
+		
+		if not node is Node3D:
+			print("[Swap Nodes] Skipping non-Node3D node: " + node.name)
+			continue
+		
+		var instance = resource.instantiate()
+		if not instance is Node3D:
+			print("[Swap Nodes] Skipping, instantiated scene root is not a Node3D")
+			instance.queue_free()
+			continue
+		
 		instance.transform = node.transform
-
+		
 		var parent = node.get_parent()
 		if parent and instance and node:
 			undo_redo.add_do_method(parent, "add_child", instance)
 			undo_redo.add_do_method(instance, "set_owner", current_scene)
 			undo_redo.add_do_method(instance, "set_name", utilities.get_unique_name(instance.name, parent))
 			undo_redo.add_do_method(node, "queue_free")
-
+			
 			undo_redo.add_undo_method(instance, "queue_free")
 			undo_redo.add_undo_method(self, "print_message", "Nodes cleared from memory, undo unavailable")
-
+			
 			print("[Swap Nodes] Node has been swapped: " + node.name)
 		else:
 			printerr("[Swap Nodes] parent not found for node: " + node.name)
-
+	
 	undo_redo.commit_action()
 
 func print_message(message: String):

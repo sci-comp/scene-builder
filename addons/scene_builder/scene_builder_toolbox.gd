@@ -62,9 +62,8 @@ static func get_all_node_names(_node : Node) -> Array:
 
 static func increment_name_until_unique(new_name : String, all_names : Array) -> String:
 	var idx : int = all_names.find_custom(func(s: String) -> bool: return s.begins_with(new_name))
-	var name_match :String = all_names[idx] if idx >= 0 else null
 	
-	if name_match != "":
+	if idx >= 0:
 		var backup_name: String = new_name
 		var suffix_counter: int = 1
 		var increment_until: bool = true

@@ -116,15 +116,6 @@ SceneBuilder commands are accessed through a searchable command palette. Press t
 
 The command palette key can be customized by editing the resource `scene_builder_config.tres`, then reloading the project.
 
-![scene_builder_shortcuts](./Documentation/Image/scene_builder_shortcuts.png)
-
-> [!CAUTION]
-Some default shortcuts for scene builder will likely conflict with Godot's default shortcuts. Scene builder's shortcuts may be updated by changing the values in the resource file: `addons/scene_builder/scene_builder_config.tres`, then reloading the project. Godot's shortcuts can be updated in the toolbar, `Editor > Editor Settings... > Shortcuts`.
-
-We can also access commands from the menu, as is shown here,
-
-![scene_builder_commands](./Documentation/Image/scene_builder_commands.png)
-
 ## The Scene Builder Dock
 
 ![scene_builder_dock](./Documentation/Image/scene_builder_dock.png)
