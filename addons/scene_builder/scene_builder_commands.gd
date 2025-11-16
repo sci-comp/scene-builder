@@ -2,9 +2,9 @@
 extends EditorPlugin
 class_name SceneBuilderCommands
 
-var submenu_scene: PopupMenu
 var reusable_instance
 var config: SceneBuilderConfig
+var command_palette
 
 enum SceneCommands
 {
@@ -35,40 +35,12 @@ func _unhandled_input(event: InputEvent):
 	
 	if event is InputEventKey:
 		if event.is_pressed() and !event.is_echo():
-			if event.alt_pressed:
-				
-				match event.physical_keycode:
-					config.alphabetize_nodes:
-						alphabetize_nodes()
-					config.change_places:
-						change_places()
-					config.create_audio_stream_player_3d:
-						create_audio_stream_player_3d()
-					config.create_scene_builder_items:
-						create_scene_builder_items()
-					config.create_standard_material_3d:
-						create_standard_material_3d()
-					config.instantiate_in_a_row_1:
-						instantiate_in_a_row(1)
-					config.instantiate_in_a_row_2:
-						instantiate_in_a_row(2)
-					config.instantiate_in_a_row_5:
-						instantiate_in_a_row(5)
-					config.push_to_grid:
-						push_to_grid()
-					config.push_parent_offset_to_child:
-						push_parent_offset_to_child()
-					config.reset_node_name:
-						reset_node_name()
-					config.reset_transform:
-						reset_transform()
-					config.swap_nodes:
-						swap_nodes()
-					config.set_visibility:
-						set_visibility()
-					config.temporary_debug:
-						temporary_debug()
-
+			
+			if event.physical_keycode == config.command_palette_key and not event.shift_pressed and not event.ctrl_pressed and not event.alt_pressed:
+				if command_palette:
+					command_palette.show_palette()
+					get_viewport().set_input_as_handled()
+					
 			elif event.ctrl_pressed:
 				if event.physical_keycode == KEY_RIGHT:
 					select_children()
@@ -76,29 +48,38 @@ func _unhandled_input(event: InputEvent):
 					select_parents()
 
 func _enter_tree():
-	submenu_scene = PopupMenu.new()
-	submenu_scene.connect("id_pressed", Callable(self, "_on_scene_submenu_item_selected"))
-	add_tool_submenu_item("Scene Builder", submenu_scene)
-	submenu_scene.add_item("Add audio streams to randomizer", SceneCommands.add_streams_to_randomizer)
-	submenu_scene.add_item("Alphabetize nodes", SceneCommands.alphabetize_nodes)
-	submenu_scene.add_item("Change places", SceneCommands.change_places)
-	submenu_scene.add_item("Create audio stream player 3d", SceneCommands.create_audio_stream_player_3d)
-	submenu_scene.add_item("Create scene builder items", SceneCommands.create_scene_builder_items)
-	submenu_scene.add_item("Create StandardMaterial3D", SceneCommands.create_standard_material_3d)
-	submenu_scene.add_item("Fix negative scaling", SceneCommands.fix_negative_scaling)
-	submenu_scene.add_item("Instantiate selected paths in a row (1m)", SceneCommands.instantiate_in_a_row_1)
-	submenu_scene.add_item("Instantiate selected paths in a row (5m)", SceneCommands.instantiate_in_a_row_2)
-	submenu_scene.add_item("Instantiate selected paths in a row (10m)", SceneCommands.instantiate_in_a_row_3)
-	submenu_scene.add_item("Push to grid", SceneCommands.push_to_grid)
-	submenu_scene.add_item("Push parent offset to child", SceneCommands.push_parent_offset_to_child)
-	submenu_scene.add_item("Reset node names", SceneCommands.reset_node_name)
-	submenu_scene.add_item("Reset transform", SceneCommands.reset_transform)
-	submenu_scene.add_item("Select children", SceneCommands.select_children)
-	submenu_scene.add_item("Select parents", SceneCommands.select_parents)
-	submenu_scene.add_item("Swap nodes", SceneCommands.swap_nodes)
+	# Initialize command palette
+	command_palette = preload("./scene_builder_command_palette.gd").new()
+	command_palette.command_selected.connect(_on_command_palette_selected)
+	add_child(command_palette)
+
+	# Setup command list for palette
+	var commands: Array[Dictionary] = []
+	commands.append({"id": SceneCommands.add_streams_to_randomizer, "name": "Add audio streams to randomizer"})
+	commands.append({"id": SceneCommands.alphabetize_nodes, "name": "Alphabetize nodes"})
+	commands.append({"id": SceneCommands.change_places, "name": "Change places"})
+	commands.append({"id": SceneCommands.create_audio_stream_player_3d, "name": "Create audio stream player 3d"})
+	commands.append({"id": SceneCommands.create_scene_builder_items, "name": "Create scene builder items"})
+	commands.append({"id": SceneCommands.create_standard_material_3d, "name": "Create StandardMaterial3D"})
+	commands.append({"id": SceneCommands.fix_negative_scaling, "name": "Fix negative scaling"})
+	commands.append({"id": SceneCommands.instantiate_in_a_row_1, "name": "Instantiate selected paths in a row (1m)"})
+	commands.append({"id": SceneCommands.instantiate_in_a_row_2, "name": "Instantiate selected paths in a row (5m)"})
+	commands.append({"id": SceneCommands.instantiate_in_a_row_3, "name": "Instantiate selected paths in a row (10m)"})
+	commands.append({"id": SceneCommands.push_to_grid, "name": "Push to grid"})
+	commands.append({"id": SceneCommands.push_parent_offset_to_child, "name": "Push parent offset to child"})
+	commands.append({"id": SceneCommands.reset_node_name, "name": "Reset node names"})
+	commands.append({"id": SceneCommands.reset_transform, "name": "Reset transform"})
+	commands.append({"id": SceneCommands.select_children, "name": "Select children"})
+	commands.append({"id": SceneCommands.select_parents, "name": "Select parents"})
+	commands.append({"id": SceneCommands.set_visibility, "name": "Set visibility"})
+	commands.append({"id": SceneCommands.swap_nodes, "name": "Swap nodes"})
+	command_palette.setup_commands(commands)
 
 func _exit_tree():
 	remove_tool_menu_item("Scene Builder")
+
+func _on_command_palette_selected(id: int):
+	_on_scene_submenu_item_selected(id)
 
 func _on_scene_submenu_item_selected(id: int):
 	match id:

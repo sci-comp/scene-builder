@@ -22,7 +22,7 @@ Since I use this tool for my own games, any form of collaboration, bug reports, 
 	- [Grid Snapping](#grid-snapping)
 - [Installation](#installation)
 - [Shortcuts](#shortcuts)
-	- [The Alt Key](#the-alt-key)
+	- [Command Palette](#command-palette)
 - [The Scene Builder Dock](#the-scene-builder-dock)
 	- [Setting Up The Dock](#setting-up-the-dock)
 	- [Scene Builder Items](#scene-builder-items)
@@ -110,11 +110,11 @@ With an item selected in the dock,
 - Select parents: Ctrl + Left Arrow
 - Right-click an item icon to quick-access its resource file
 
-### The Alt Key
+### Command Palette
 
-SceneBuilder commands all require the Alt key pressed for activation. Although Godot generally doesn't make use of the Alt key, it does conflict in a few cases. To keep things simple, I simply move Godot's shortcut somewhere else. Shortcuts are still in progress-- new commands are still being added.
+SceneBuilder commands are accessed through a searchable command palette. Press the **backtick key (`)** to open the command palette, then type to filter commands and press Enter to execute.
 
-To update default shortcuts, edit the resource `scene_builder_config.tres`, then reload the project.
+The command palette key can be customized by editing the resource `scene_builder_config.tres`, then reloading the project.
 
 ![scene_builder_shortcuts](./Documentation/Image/scene_builder_shortcuts.png)
 
@@ -154,7 +154,7 @@ We can enable the plugin now to preview collection names in the dock. Since our 
 To create an item resource,
 
 1. Select one or more paths in FileSystem that contain an imported scene with a root node that derives from type Node3D.
-2. Run the "Create scene builder items" command by going to Project > Tools > Scene Builder > Create scene builder items, or by pressing the keyboard shortcut `Alt + /`
+2. Run the "Create scene builder items" command by opening the command palette (backtick) and typing "Create scene builder items", or by going to Project > Tools > Scene Builder > Create scene builder items
 3. Fill out the fields in the popup window, then hit okay.
 4. After pressing okay, the `icon_studio` scene will be opened. Please close the scene when it's done without saving changes to icon_studio.tscn. However, if you would like to make changes to icon_studio.tscn, then that's a great way to customize your icons.
 5. In the scene builder dock, click the button "Reload all items"
