@@ -75,9 +75,6 @@ func _enter_tree():
 	commands.append({"id": SceneCommands.swap_nodes, "name": "Swap nodes"})
 	command_palette.setup_commands(commands)
 
-func _exit_tree():
-	remove_tool_menu_item("Scene Builder")
-
 func _on_command_palette_selected(id: int):
 	_on_scene_submenu_item_selected(id)
 

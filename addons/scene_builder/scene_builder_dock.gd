@@ -290,6 +290,7 @@ func _process(_delta: float) -> void:
 							quaternion = quaternion * Quaternion(Vector3(1, 0, 0), deg_to_rad(90))
 						elif btn_surface_normal_z.button_pressed:
 							quaternion = quaternion * Quaternion(Vector3(0, 0, 1), deg_to_rad(90))
+						_instance.basis = Basis(quaternion)
 
 
 func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput:
@@ -1127,7 +1128,7 @@ func place_fence():
 	
 		var chosen_piece_name: String = fence_piece_names[randi() % fence_piece_names.size()]
 		var chosen_piece = items_by_collection[selected_collection_name][chosen_piece_name]
-		var instance = get_instance_from_path(chosen_piece.scene_path)
+		var instance = get_instance_from_path(chosen_piece["uid"])
 	
 		undo_redo.add_do_method(scene_root, "add_child", instance)
 		undo_redo.add_do_method(instance, "set_owner", scene_root)
