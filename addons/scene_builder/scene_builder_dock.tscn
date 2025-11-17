@@ -2790,7 +2790,7 @@ layout_mode = 2
 [node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-current_tab = 2
+current_tab = 1
 
 [node name="Options" type="VBoxContainer" parent="Settings/Tab"]
 visible = false
@@ -2897,68 +2897,105 @@ layout_mode = 2
 size_flags_vertical = 4
 text = "Reload items"
 
-[node name="Path3D" type="VBoxContainer" parent="Settings/Tab"]
+[node name="Fence" type="VBoxContainer" parent="Settings/Tab"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Separation" type="HBoxContainer" parent="Settings/Tab/Path3D"]
+[node name="SpacingMultiplier" type="HBoxContainer" parent="Settings/Tab/Fence"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 5
 
-[node name="Label" type="Label" parent="Settings/Tab/Path3D/Separation"]
+[node name="Label" type="Label" parent="Settings/Tab/Fence/SpacingMultiplier"]
 layout_mode = 2
-text = "Separation Distance"
+text = "Spacing Multiplier"
 
-[node name="SpinBox" type="SpinBox" parent="Settings/Tab/Path3D/Separation"]
+[node name="SpinBox" type="SpinBox" parent="Settings/Tab/Fence/SpacingMultiplier"]
 layout_mode = 2
-min_value = 0.25
-step = 0.25
-value = 1.0
+step = 0.1
 suffix = "m"
 
-[node name="Jitter" type="HBoxContainer" parent="Settings/Tab/Path3D"]
+[node name="ForwardAxis" type="HBoxContainer" parent="Settings/Tab/Fence"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 5
+
+[node name="Label" type="Label" parent="Settings/Tab/Fence/ForwardAxis"]
+layout_mode = 2
+text = "Forward Axis"
+
+[node name="OptionButton" type="OptionButton" parent="Settings/Tab/Fence/ForwardAxis"]
+layout_mode = 2
+selected = 5
+item_count = 6
+popup/item_0/text = "X"
+popup/item_0/id = 0
+popup/item_1/text = "Y"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+popup/item_3/text = "-X"
+popup/item_3/id = 3
+popup/item_4/text = "-Y"
+popup/item_4/id = 4
+popup/item_5/text = "-Z"
+popup/item_5/id = 5
+
+[node name="PositionJitter" type="HBoxContainer" parent="Settings/Tab/Fence"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Label" type="Label" parent="Settings/Tab/Path3D/Jitter"]
+[node name="Label" type="Label" parent="Settings/Tab/Fence/PositionJitter"]
 layout_mode = 2
-text = "Jitter"
+text = "Pos Jitter"
 
-[node name="X" type="SpinBox" parent="Settings/Tab/Path3D/Jitter"]
+[node name="X" type="SpinBox" parent="Settings/Tab/Fence/PositionJitter"]
+layout_mode = 2
+max_value = 360.0
+suffix = "m"
+
+[node name="Y" type="SpinBox" parent="Settings/Tab/Fence/PositionJitter"]
+layout_mode = 2
+max_value = 360.0
+suffix = "m"
+
+[node name="Z" type="SpinBox" parent="Settings/Tab/Fence/PositionJitter"]
+layout_mode = 2
+max_value = 360.0
+suffix = "m"
+
+[node name="RotationJitter" type="HBoxContainer" parent="Settings/Tab/Fence"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Settings/Tab/Fence/RotationJitter"]
+layout_mode = 2
+text = "Rot Jitter"
+
+[node name="X" type="SpinBox" parent="Settings/Tab/Fence/RotationJitter"]
 layout_mode = 2
 max_value = 360.0
 suffix = "deg"
 
-[node name="Y" type="SpinBox" parent="Settings/Tab/Path3D/Jitter"]
+[node name="Y" type="SpinBox" parent="Settings/Tab/Fence/RotationJitter"]
 layout_mode = 2
 max_value = 360.0
 suffix = "deg"
 
-[node name="Z" type="SpinBox" parent="Settings/Tab/Path3D/Jitter"]
+[node name="Z" type="SpinBox" parent="Settings/Tab/Fence/RotationJitter"]
 layout_mode = 2
 max_value = 360.0
 suffix = "deg"
 
-[node name="YOffset" type="HBoxContainer" parent="Settings/Tab/Path3D"]
-layout_mode = 2
-size_flags_horizontal = 5
-
-[node name="Label" type="Label" parent="Settings/Tab/Path3D/YOffset"]
-layout_mode = 2
-text = "Y-Offset"
-
-[node name="Value" type="SpinBox" parent="Settings/Tab/Path3D/YOffset"]
-layout_mode = 2
-max_value = 360.0
-suffix = "deg"
-
-[node name="PlaceFence" type="Button" parent="Settings/Tab/Path3D"]
+[node name="PlaceFence" type="Button" parent="Settings/Tab/Fence"]
 layout_mode = 2
 text = "Place Fence"
 
 [node name="Snap" type="VBoxContainer" parent="Settings/Tab"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

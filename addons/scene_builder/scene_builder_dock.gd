@@ -2,6 +2,9 @@
 extends EditorPlugin
 class_name SceneBuilderDock
 
+const ForwardAxis = SceneBuilderToolbox.ForwardAxis
+const TransformMode = SceneBuilderToolbox.TransformMode
+
 @onready var config: SceneBuilderConfig = SceneBuilderConfig.new()
 
 # Paths
@@ -41,12 +44,15 @@ var btn_group_surface_orientation: ButtonGroup
 var btn_find_world_3d: Button
 var btn_reload_all_items: Button
 var btn_force_root_node: CheckButton
-# Path3D
-var spinbox_separation_distance: SpinBox
-var spinbox_jitter_x: SpinBox
-var spinbox_jitter_y: SpinBox
-var spinbox_jitter_z: SpinBox
-var spinbox_y_offset: SpinBox
+# Fence Tool
+var spinbox_spacing_multiplier: SpinBox
+var option_forward_axis: OptionButton
+var spinbox_position_jitter_x: SpinBox
+var spinbox_position_jitter_y: SpinBox
+var spinbox_position_jitter_z: SpinBox
+var spinbox_rotation_jitter_x: SpinBox
+var spinbox_rotation_jitter_y: SpinBox
+var spinbox_rotation_jitter_z: SpinBox
 var btn_place_fence: Button
 # Snap
 var checkbox_snap_enabled: CheckButton
@@ -88,17 +94,6 @@ var selected_item_name: String = ""
 var preview_instance: Node3D = null
 var preview_instance_rid_array: Array[RID] = []
 var selected_parent_node: Node3D = null
-
-enum TransformMode {
-	NONE,
-	POSITION_X,
-	POSITION_Y, 
-	POSITION_Z,
-	ROTATION_X,
-	ROTATION_Y,
-	ROTATION_Z,
-	SCALE
-}
 
 var placement_mode_enabled: bool = false
 var current_transform_mode: TransformMode = TransformMode.NONE
@@ -188,13 +183,16 @@ func _enter_tree() -> void:
 	btn_reload_all_items.pressed.connect(reload_all_items)
 	btn_force_root_node.toggled.connect(on_force_root_toggled)
 	
-	# Path3D tab
-	spinbox_separation_distance = scene_builder_dock.get_node("%Path3D/Separation/SpinBox")
-	spinbox_jitter_x = scene_builder_dock.get_node("%Path3D/Jitter/X")
-	spinbox_jitter_y = scene_builder_dock.get_node("%Path3D/Jitter/Y")
-	spinbox_jitter_z = scene_builder_dock.get_node("%Path3D/Jitter/Z")
-	spinbox_y_offset = scene_builder_dock.get_node("%Path3D/YOffset/Value")
-	btn_place_fence = scene_builder_dock.get_node("%Path3D/PlaceFence")
+	# Fence Tool tab
+	spinbox_spacing_multiplier = scene_builder_dock.get_node("%Fence/SpacingMultiplier/SpinBox")
+	option_forward_axis = scene_builder_dock.get_node("%Fence/ForwardAxis/OptionButton")
+	spinbox_position_jitter_x = scene_builder_dock.get_node("%Fence/PositionJitter/X")
+	spinbox_position_jitter_y = scene_builder_dock.get_node("%Fence/PositionJitter/Y")
+	spinbox_position_jitter_z = scene_builder_dock.get_node("%Fence/PositionJitter/Z")
+	spinbox_rotation_jitter_x = scene_builder_dock.get_node("%Fence/RotationJitter/X")
+	spinbox_rotation_jitter_y = scene_builder_dock.get_node("%Fence/RotationJitter/Y")
+	spinbox_rotation_jitter_z = scene_builder_dock.get_node("%Fence/RotationJitter/Z")
+	btn_place_fence = scene_builder_dock.get_node("%Fence/PlaceFence")
 	btn_place_fence.pressed.connect(place_fence)
 	
 	# Setup snap controls
@@ -1102,7 +1100,7 @@ func place_fence():
 	var selected_nodes: Array[Node] = selection.get_selected_nodes()
 	
 	if scene_root == null:
-		print("[SceneBuilderDock] Scene root is null")
+		printerr("[SceneBuilderDock] Scene root is null")
 		return
 	
 	if selected_nodes.size() != 1:
@@ -1112,38 +1110,132 @@ func place_fence():
 	if not selected_nodes[0] is Path3D:
 		printerr("[SceneBuilderDock] The selected node should be of type Node3D")
 		return
-	
-	undo_redo.create_action("Make a fence")
-	
-	var path: Path3D = selected_nodes[0]
+		
+	if selected_collection_name == "" or not ordered_keys_by_collection.has(selected_collection_name):
+		printerr("[SceneBuilderDock] No collection selected")
+		return
 	
 	var fence_piece_names: Array = ordered_keys_by_collection[selected_collection_name]
-	var path_length: float = path.curve.get_baked_length()
 	
-	for distance in range(0, path_length, spinbox_separation_distance.value):
+	if fence_piece_names.is_empty():
+		printerr("[SceneBuilderDock] Selected collection is empty")
+		return
 	
-		var transform: Transform3D = path.curve.sample_baked_with_rotation(distance)
-		var position: Vector3 = transform.origin
-		var basis: Basis = transform.basis.rotated(Vector3(0, 1, 0), deg_to_rad(spinbox_y_offset.value))
+	# Get parameters
+	var path: Path3D = selected_nodes[0]
+	var curve: Curve3D = path.curve
 	
-		var chosen_piece_name: String = fence_piece_names[randi() % fence_piece_names.size()]
-		var chosen_piece = items_by_collection[selected_collection_name][chosen_piece_name]
-		var instance = get_instance_from_path(chosen_piece["uid"])
+	if curve == null:
+		printerr("[SceneBuilderDock] Path3D has no curve")
+		return
 	
-		undo_redo.add_do_method(scene_root, "add_child", instance)
+	# Pre-filter collection to only include pieces with measurable geometry
+	var valid_pieces: Array[Dictionary] = []
+	for piece_name in fence_piece_names:
+		var piece: Dictionary = items_by_collection[selected_collection_name][piece_name]
+		var dimensions := SceneBuilderToolbox.get_scene_dimensions(piece["uid"])
+		if dimensions != Vector3.ZERO:
+			valid_pieces.append({"name": piece_name, "data": piece, "dimensions": dimensions})
+		else:
+			printerr("[SceneBuilderDock] Skipping '", piece_name, "' - no measurable geometry")
+	
+	if valid_pieces.is_empty():
+		printerr("[SceneBuilderDock] No pieces in collection have measurable geometry")
+		return
+	
+	print("[SceneBuilderDock] Found ", valid_pieces.size(), " valid fence pieces (out of ", fence_piece_names.size(), ")")
+	
+	var path_length: float = curve.get_baked_length()
+	var spacing_multiplier: float = spinbox_spacing_multiplier.value
+	var forward_axis: ForwardAxis = option_forward_axis.selected as ForwardAxis
+	
+	# Jitter parameters
+	var pos_jitter := Vector3(
+		spinbox_position_jitter_x.value,
+		spinbox_position_jitter_y.value,
+		spinbox_position_jitter_z.value
+	)
+	var rot_jitter := Vector3(
+		spinbox_rotation_jitter_x.value,
+		spinbox_rotation_jitter_y.value,
+		spinbox_rotation_jitter_z.value
+	)
+	
+	print("[SceneBuilderDock] Placing fence along path (length: ", path_length, ")")
+	
+	undo_redo.create_action("Place Fence")
+	
+	var current_distance: float = 0.0
+	var pieces_placed: int = 0
+	
+	while current_distance < path_length:
+		# Pick random valid fence piece
+		var chosen_piece_dict: Dictionary = valid_pieces[randi() % valid_pieces.size()]
+		var chosen_piece_name: String = chosen_piece_dict["name"]
+		var chosen_piece: Dictionary = chosen_piece_dict["data"]
+		var dimensions: Vector3 = chosen_piece_dict["dimensions"]
+	
+		# Calculate step distance based on largest horizontal dimension
+		var piece_length: float = max(dimensions.x, dimensions.z)
+		var step_distance: float = piece_length * spacing_multiplier
+	
+		# Sample curve at current position
+		var transform: Transform3D = curve.sample_baked_with_rotation(current_distance)
+	
+		# Create instance
+		var instance := get_instance_from_path(chosen_piece["uid"])
+		if instance == null:
+			printerr("[SceneBuilderDock] Failed to instantiate '", chosen_piece_name, "'")
+			current_distance += step_distance
+			continue
+	
+		# Set unique name
+		var all_names := toolbox.get_all_node_names(path)
+		instance.name = toolbox.increment_name_until_unique(chosen_piece_name, all_names)
+	
+		# Apply forward axis rotation
+		var axis_rotation := SceneBuilderToolbox.get_forward_axis_rotation(forward_axis)
+		transform.basis = transform.basis * axis_rotation
+	
+		# Apply jitter in local space
+		var jitter_transform := Transform3D.IDENTITY
+	
+		# Position jitter
+		if pos_jitter != Vector3.ZERO:
+			var random_pos_offset := Vector3(
+				randf_range(-pos_jitter.x, pos_jitter.x),
+				randf_range(-pos_jitter.y, pos_jitter.y),
+				randf_range(-pos_jitter.z, pos_jitter.z)
+			)
+			jitter_transform.origin = random_pos_offset
+	
+		# Rotation jitter
+		if rot_jitter != Vector3.ZERO:
+			var random_rot := Vector3(
+				randf_range(-rot_jitter.x, rot_jitter.x),
+				randf_range(-rot_jitter.y, rot_jitter.y),
+				randf_range(-rot_jitter.z, rot_jitter.z)
+			)
+			jitter_transform.basis = jitter_transform.basis.rotated(Vector3(1, 0, 0), deg_to_rad(random_rot.x))
+			jitter_transform.basis = jitter_transform.basis.rotated(Vector3(0, 1, 0), deg_to_rad(random_rot.y))
+			jitter_transform.basis = jitter_transform.basis.rotated(Vector3(0, 0, 1), deg_to_rad(random_rot.z))
+	
+		# Combine transforms: curve transform * jitter (in local space)
+		var final_transform := transform * jitter_transform
+	
+		# Add to undo/redo
+		undo_redo.add_do_method(path, "add_child", instance)
 		undo_redo.add_do_method(instance, "set_owner", scene_root)
-		undo_redo.add_do_method(instance, "set_global_transform", Transform3D(
-			basis.rotated(Vector3(1, 0, 0), randf() * deg_to_rad(spinbox_jitter_x.value))
-				 .rotated(Vector3(0, 1, 0), randf() * deg_to_rad(spinbox_jitter_y.value))
-				 .rotated(Vector3(0, 0, 1), randf() * deg_to_rad(spinbox_jitter_z.value)),
-			position
-		))
-
-		undo_redo.add_undo_method(scene_root, "remove_child", instance)
-
-	print("[SceneBuilderDock] Commiting action")
+		undo_redo.add_do_property(instance, "transform", final_transform)
+		undo_redo.add_undo_method(path, "remove_child", instance)
+		undo_redo.add_do_reference(instance)
+	
+		pieces_placed += 1
+		current_distance += step_distance
+	
 	undo_redo.commit_action()
-
+	
+	print("[SceneBuilderDock] Placed ", pieces_placed, " fence pieces")
 
 func reroll_preview_instance_transform() -> void:
 	if preview_instance == null:
