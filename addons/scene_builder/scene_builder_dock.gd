@@ -1108,7 +1108,7 @@ func place_fence():
 		return
 	
 	if not selected_nodes[0] is Path3D:
-		printerr("[SceneBuilderDock] The selected node should be of type Node3D")
+		printerr("[SceneBuilderDock] The selected node should be of type Path3D")
 		return
 		
 	if selected_collection_name == "" or not ordered_keys_by_collection.has(selected_collection_name):
@@ -1147,7 +1147,12 @@ func place_fence():
 	
 	var path_length: float = curve.get_baked_length()
 	var spacing_multiplier: float = spinbox_spacing_multiplier.value
-	var forward_axis: ForwardAxis = option_forward_axis.selected as ForwardAxis
+	var forward_axis: ForwardAxis = option_forward_axis.selected
+
+	# Beware infinite loops
+	if spacing_multiplier <= 0.0:
+		printerr("[SceneBuilderDock] Spacing multiplier must be greater than 0")
+		return
 	
 	# Jitter parameters
 	var pos_jitter := Vector3(
@@ -1162,6 +1167,10 @@ func place_fence():
 	)
 	
 	print("[SceneBuilderDock] Placing fence along path (length: ", path_length, ")")
+	
+	var existing_names: Array = []
+	for child in path.get_children():
+		existing_names.append(child.name)
 	
 	undo_redo.create_action("Place Fence")
 	
@@ -1190,8 +1199,8 @@ func place_fence():
 			continue
 	
 		# Set unique name
-		var all_names := toolbox.get_all_node_names(path)
-		instance.name = toolbox.increment_name_until_unique(chosen_piece_name, all_names)
+		instance.name = toolbox.increment_name_until_unique(chosen_piece_name, existing_names)
+		existing_names.append(instance.name)
 	
 		# Apply forward axis rotation
 		var axis_rotation := SceneBuilderToolbox.get_forward_axis_rotation(forward_axis)
@@ -1223,10 +1232,11 @@ func place_fence():
 		# Combine transforms: curve transform * jitter (in local space)
 		var final_transform := transform * jitter_transform
 	
+		instance.transform = final_transform
+		
 		# Add to undo/redo
 		undo_redo.add_do_method(path, "add_child", instance)
 		undo_redo.add_do_method(instance, "set_owner", scene_root)
-		undo_redo.add_do_property(instance, "transform", final_transform)
 		undo_redo.add_undo_method(path, "remove_child", instance)
 		undo_redo.add_do_reference(instance)
 	
