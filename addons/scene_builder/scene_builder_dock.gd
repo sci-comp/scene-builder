@@ -26,7 +26,6 @@ var undo_redo: EditorUndoRedoManager
 
 # Godot controls
 var base_control: Control
-var btn_use_local_space: Button
 
 # SceneBuilderDock controls
 var scene_builder_dock: VBoxContainer
@@ -36,6 +35,7 @@ var tab_container: TabContainer  # Current active tab container
 var btns_collection_tabs: Array = []  # Current active buttons (reference to one palette)
 # Options
 var btn_use_surface_normal: CheckButton
+var btn_use_local_space: CheckButton
 var btn_surface_normal_x: CheckBox
 var btn_surface_normal_y: CheckBox
 var btn_surface_normal_z: CheckBox
@@ -132,18 +132,7 @@ func _enter_tree() -> void:
 	editor = get_editor_interface()
 	undo_redo = get_undo_redo()
 	base_control = editor.get_base_control()
-	
-	# Found using: https://github.com/Zylann/godot_editor_debugger_plugin
-	var _panel : Panel = get_editor_interface().get_base_control()
-	var _vboxcontainer15 : VBoxContainer = _panel.get_child(0)
-	var _vboxcontainer26 : VBoxContainer = _vboxcontainer15.get_child(1).get_child(1).get_child(1).get_child(0)
-	var _main_screen : VBoxContainer = _vboxcontainer26.get_child(0).get_child(0).get_child(0).get_child(1).get_child(0)
-	var _hboxcontainer11486 : HBoxContainer = _main_screen.get_child(1).get_child(0).get_child(0).get_child(0)
-	
-	btn_use_local_space = _hboxcontainer11486.get_child(13)
-	if !btn_use_local_space:
-		printerr("[SceneBuilderDock] Unable to find use local space button")
-	
+
 	#region Initialize controls for the SceneBuilderDock
 	
 	var path : String = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_dock.tscn")
@@ -157,6 +146,7 @@ func _enter_tree() -> void:
 	
 	# Options tab
 	btn_use_surface_normal = scene_builder_dock.get_node("%UseSurfaceNormal")
+	btn_use_local_space = scene_builder_dock.get_node("%UseLocalSpace")
 	btn_surface_normal_x = scene_builder_dock.get_node("%Orientation/ButtonGroup/X")
 	btn_surface_normal_y = scene_builder_dock.get_node("%Orientation/ButtonGroup/Y")
 	btn_surface_normal_z = scene_builder_dock.get_node("%Orientation/ButtonGroup/Z")
