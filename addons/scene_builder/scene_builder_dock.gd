@@ -645,13 +645,18 @@ func reload_all_items() -> void:
 		
 		for i in range(num_collections):
 			var collection_name = palette_collection_names[i]
-			
+
 			if collection_name != "" and collection_name != " ":
 				var grid_container: GridContainer = tc.get_node("%s/Grid" % (i + 1))
-				
+				var grid_path = "%s/Grid" % (i + 1)
+
 				load_items_from_database(collection_name)
+				var num_items = ordered_keys_by_collection[collection_name].size()
+				print("[DEBUG] Palette %d, Index %d, Collection '%s', Grid path '%s', Items to load: %d" % [palette_idx, i, collection_name, grid_path, num_items])
+
 				item_highlighters_by_collection[collection_name] = {}
-				
+				var items_added = 0
+
 				for key: String in ordered_keys_by_collection[collection_name]:
 					var item_data: Dictionary = items_by_collection[collection_name][key]
 					var texture_button: TextureButton = TextureButton.new()
@@ -671,7 +676,8 @@ func reload_all_items() -> void:
 					texture_button.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
 					
 					grid_container.add_child(texture_button)
-					
+					items_added += 1
+
 					var nine_patch: NinePatchRect = NinePatchRect.new()
 					nine_patch.texture = CanvasTexture.new()
 					nine_patch.draw_center = false
@@ -683,6 +689,8 @@ func reload_all_items() -> void:
 					nine_patch.self_modulate = Color.BLACK
 					item_highlighters_by_collection[collection_name][key] = nine_patch
 					texture_button.add_child(nine_patch)
+
+			print("[DEBUG] Palette %d, Index %d finished - Added %d items to grid. Grid now has %d children" % [palette_idx, i, items_added, grid_container.get_child_count()])
 	
 	select_collection(0)
 	print("[SceneBuilderDock] Reload complete")
