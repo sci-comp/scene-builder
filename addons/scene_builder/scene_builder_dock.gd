@@ -637,21 +637,43 @@ func reload_all_items() -> void:
 	refresh_collection_names()
 	
 	print("[SceneBuilderDock] Loading all items from all collections")
-	
-	# Load items for all palettes
+
+	# Phase 1: Collect all scene paths for batch thumbnail generation
+	var all_scene_paths: Array = []
+	var seen_paths: Dictionary = {}
+
+	for palette_idx in range(num_palettes):
+		var palette_collection_names = all_collection_names[palette_idx]
+		for i in range(num_collections):
+			var collection_name = palette_collection_names[i]
+			if collection_name != "" and collection_name != " ":
+				load_items_from_database(collection_name)
+				for key: String in ordered_keys_by_collection[collection_name]:
+					var item_data: Dictionary = items_by_collection[collection_name][key]
+					var uid = ResourceUID.text_to_id(item_data["uid"])
+					if not ResourceUID.has_id(uid):
+						continue
+					var scene_path = ResourceUID.get_id_path(uid)
+					if not seen_paths.has(scene_path):
+						seen_paths[scene_path] = true
+						all_scene_paths.append(scene_path)
+
+	# Phase 2: Batch generate all thumbnails using spatial grid rendering
+	var thumbnails = await thumbnail_generator.generate_thumbnails_batch(all_scene_paths)
+
+	# Phase 3: Create buttons using pre-generated thumbnails
 	for palette_idx in range(num_palettes):
 		var tc = tab_containers[palette_idx]
 		var palette_collection_names = all_collection_names[palette_idx]
-		
+
 		for i in range(num_collections):
 			var collection_name = palette_collection_names[i]
-			
+
 			if collection_name != "" and collection_name != " ":
 				var grid_container: GridContainer = tc.get_node("%s/Grid" % (i + 1))
-				
-				load_items_from_database(collection_name)
+
 				item_highlighters_by_collection[collection_name] = {}
-				
+
 				for key: String in ordered_keys_by_collection[collection_name]:
 					var item_data: Dictionary = items_by_collection[collection_name][key]
 					var texture_button: TextureButton = TextureButton.new()
@@ -660,7 +682,9 @@ func reload_all_items() -> void:
 					if not ResourceUID.has_id(uid):
 						continue
 					var scene_path = ResourceUID.get_id_path(uid)
-					var thumbnail = await thumbnail_generator.generate_thumbnail(scene_path)
+					var thumbnail = thumbnails.get(scene_path)
+					if thumbnail == null:
+						continue
 					texture_button.texture_normal = thumbnail
 					texture_button.tooltip_text = key
 					texture_button.ignore_texture_size = true
@@ -669,9 +693,9 @@ func reload_all_items() -> void:
 					texture_button.pressed.connect(on_item_icon_clicked.bind(key))
 					texture_button.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 					texture_button.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
-					
+
 					grid_container.add_child(texture_button)
-					
+
 					var nine_patch: NinePatchRect = NinePatchRect.new()
 					nine_patch.texture = CanvasTexture.new()
 					nine_patch.draw_center = false
@@ -683,7 +707,7 @@ func reload_all_items() -> void:
 					nine_patch.self_modulate = Color.BLACK
 					item_highlighters_by_collection[collection_name][key] = nine_patch
 					texture_button.add_child(nine_patch)
-	
+
 	select_collection(0)
 	print("[SceneBuilderDock] Reload complete")
 
