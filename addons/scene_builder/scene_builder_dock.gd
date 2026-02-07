@@ -7,6 +7,8 @@ const TransformMode = SceneBuilderToolbox.TransformMode
 
 @onready var config: SceneBuilderConfig = SceneBuilderConfig.new()
 
+var _is_reloading: bool = false
+
 # Paths
 var data_dir: String = ""
 var path_to_collection_names: String
@@ -43,6 +45,7 @@ var btn_parent_node_selector: Button
 var btn_group_surface_orientation: ButtonGroup
 var btn_find_world_3d: Button
 var btn_reload_all_items: Button
+var btn_clear_items: Button
 var btn_force_root_node: CheckButton
 # Fence Tool
 var spinbox_spacing_multiplier: SpinBox
@@ -167,11 +170,13 @@ func _enter_tree() -> void:
 	#
 	btn_find_world_3d = scene_builder_dock.get_node("%FindWorld3D")
 	btn_reload_all_items = scene_builder_dock.get_node("%ReloadAllItems")
+	btn_clear_items = scene_builder_dock.get_node("%ClearItems")
 	btn_disable_hotkeys = scene_builder_dock.get_node("%DisableHotkeys")
 	btn_force_root_node = scene_builder_dock.get_node("%ForceRootNode")
 	btn_find_world_3d.pressed.connect(update_world_3d)
 	btn_reload_all_items.pressed.connect(reload_all_items)
 	btn_force_root_node.toggled.connect(on_force_root_toggled)
+	btn_clear_items.pressed.connect(clear_items)
 	
 	# Fence Tool tab
 	spinbox_spacing_multiplier = scene_builder_dock.get_node("%Fence/SpacingMultiplier/SpinBox")
@@ -235,7 +240,7 @@ func _enter_tree() -> void:
 
 func _delayed_reload():
 	await EditorInterface.get_resource_filesystem().filesystem_changed
-	reload_all_items()
+	await reload_all_items()
 
 
 func _exit_tree() -> void:
@@ -624,6 +629,11 @@ func set_parent_node(node_path: NodePath) -> void:
 
 
 func reload_all_items() -> void:
+	if _is_reloading:
+		print("[SceneBuilderDock] Reload already in progress, skipping")
+		return
+	_is_reloading = true
+	
 	print("[SceneBuilderDock] Freeing all texture buttons")
 	
 	# Free all existing buttons from all palettes
@@ -638,7 +648,29 @@ func reload_all_items() -> void:
 	
 	print("[SceneBuilderDock] Loading all items from all collections")
 	
-	# Load items for all palettes
+	# Collect all unique scene paths for batch thumbnail generation
+	var all_scene_paths: Array = []
+	var queued_paths: Dictionary = {}
+ 
+	for palette_idx in range(num_palettes):
+		var palette_collection_names = all_collection_names[palette_idx]
+		for i in range(num_collections):
+			var collection_name = palette_collection_names[i]
+			if collection_name != "" and collection_name != " ":
+				load_items_from_database(collection_name)
+				for key: String in ordered_keys_by_collection[collection_name]:
+					var item_data: Dictionary = items_by_collection[collection_name][key]
+					var uid = ResourceUID.text_to_id(item_data["uid"])
+					if not ResourceUID.has_id(uid):
+						continue
+					var scene_path = ResourceUID.get_id_path(uid)
+					if not queued_paths.has(scene_path):
+						queued_paths[scene_path] = true
+						all_scene_paths.append(scene_path)
+	
+	var thumbnails = await thumbnail_generator.generate_thumbnails_batch(all_scene_paths)
+	
+	# Create buttons using pre-generated thumbnails
 	for palette_idx in range(num_palettes):
 		var tc = tab_containers[palette_idx]
 		var palette_collection_names = all_collection_names[palette_idx]
@@ -685,6 +717,7 @@ func reload_all_items() -> void:
 					texture_button.add_child(nine_patch)
 	
 	select_collection(0)
+	_is_reloading = false
 	print("[SceneBuilderDock] Reload complete")
 
 
@@ -1451,3 +1484,31 @@ func snap_scale_to_grid(scale: Vector3) -> Vector3:
 		round(scale.y / snap_amount) * snap_amount,
 		round(scale.z / snap_amount) * snap_amount
 	)
+
+
+func clear_items() -> void:
+	# Clear thumbnail cache
+	var count = thumbnail_generator.thumbnail_cache.size()
+	thumbnail_generator.thumbnail_cache.clear()
+	print("[SceneBuilderDock] Thumbnail cache cleared (%d entries)" % count)
+	
+	# Clear loaded collections
+	items_by_collection.clear()
+	ordered_keys_by_collection.clear()
+	item_highlighters_by_collection.clear()
+	
+	# Free all texture buttons from all palettes
+	for palette_idx in range(num_palettes):
+		var tc = tab_containers[palette_idx]
+		for i in range(1, num_collections + 1):
+			var grid_container: GridContainer = tc.get_node("%s/Grid" % i)
+			for _node in grid_container.get_children():
+				_node.queue_free()
+	
+	# Clear selection state
+	end_placement_mode()
+	selected_collection.clear()
+	selected_collection_name = ""
+	selected_collection_index = 0
+	
+	print("[SceneBuilderDock] All items cleared")
