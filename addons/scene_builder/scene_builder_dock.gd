@@ -638,9 +638,9 @@ func reload_all_items() -> void:
 	
 	print("[SceneBuilderDock] Loading all items from all collections")
 
-	# Phase 1: Collect all scene paths for batch thumbnail generation
+	# Collect all unique scene paths for batch thumbnail generation
 	var all_scene_paths: Array = []
-	var seen_paths: Dictionary = {}
+	var queued_paths: Dictionary = {}
 
 	for palette_idx in range(num_palettes):
 		var palette_collection_names = all_collection_names[palette_idx]
@@ -654,14 +654,13 @@ func reload_all_items() -> void:
 					if not ResourceUID.has_id(uid):
 						continue
 					var scene_path = ResourceUID.get_id_path(uid)
-					if not seen_paths.has(scene_path):
-						seen_paths[scene_path] = true
+					if not queued_paths.has(scene_path):
+						queued_paths[scene_path] = true
 						all_scene_paths.append(scene_path)
 
-	# Phase 2: Batch generate all thumbnails using spatial grid rendering
 	var thumbnails = await thumbnail_generator.generate_thumbnails_batch(all_scene_paths)
 
-	# Phase 3: Create buttons using pre-generated thumbnails
+	# Create buttons using pre-generated thumbnails
 	for palette_idx in range(num_palettes):
 		var tc = tab_containers[palette_idx]
 		var palette_collection_names = all_collection_names[palette_idx]
