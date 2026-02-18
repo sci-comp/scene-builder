@@ -38,4 +38,5 @@ shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="SubViewport"]
 transform = Transform3D(0.866025, 0.12941, -0.482963, 0, 0.965926, 0.258819, 0.5, -0.224144, 0.836516, -5.62264, 3.24522, 9.7387)
+projection = 1
 fov = 60.0
