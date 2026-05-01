@@ -41,7 +41,6 @@ func _load_or_create_components(base_path: String) -> bool:
 	var config_script = load(base_path + "scene_builder_config.gd")
 	
 	if ResourceLoader.exists(config_path):
-		print("[SceneBuilderPlugin] Configuration file found")
 		scene_builder_config = load(config_path)
 	else:
 		scene_builder_config = config_script.new()

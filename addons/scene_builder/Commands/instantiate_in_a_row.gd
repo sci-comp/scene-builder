@@ -31,8 +31,6 @@ func execute(_spacing: int):
 			
 			instantiated_nodes.append(instance)
 			x_offset += _spacing
-			
-			print("Instantiated: " + instance.name)
 
 	undo_redo.commit_action()
 	

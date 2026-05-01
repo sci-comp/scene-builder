@@ -12,8 +12,8 @@ var data_dir: String = ""
 var path_to_collection_names: String
 
 # Constants
-var num_collections: int = 24
-var num_palettes: int = 5
+const num_collections: int = 24
+const num_palettes: int = 5
 
 # Palette state
 var current_palette_index: int = 0
@@ -129,7 +129,7 @@ var database_path: String
 func _enter_tree() -> void:
 	path_to_collection_names = config.root_dir + "collection_names.tres"
 	
-	editor = get_editor_interface()
+	editor = EditorInterface
 	undo_redo = get_undo_redo()
 	base_control = editor.get_base_control()
 
@@ -394,7 +394,6 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						elif event.button_index == MOUSE_BUTTON_RIGHT:
 							if is_transform_mode_enabled():
 								# Revert preview transformations
-								print("[SceneBuilderDock] warping to: ", original_mouse_position)
 								preview_instance.basis = original_preview_basis
 								preview_instance.scale = original_preview_scale
 								end_transform_mode()
@@ -593,10 +592,10 @@ func set_parent_node(node_path: NodePath) -> void:
 		selected_parent_node = scene_root
 		if scene_root:
 			var node_name := scene_root.get_class().split(".")[-1]
-			var node_icon := get_editor_interface().get_base_control().get_theme_icon(node_name, "EditorIcons")
+			var node_icon := EditorInterface.get_base_control().get_theme_icon(node_name, "EditorIcons")
 			
-			if node_icon == get_editor_interface().get_base_control().get_theme_icon("invalid icon", "EditorIcons"):
-				node_icon = get_editor_interface().get_base_control().get_theme_icon("Node", "EditorIcons")
+			if node_icon == EditorInterface.get_base_control().get_theme_icon("invalid icon", "EditorIcons"):
+				node_icon = EditorInterface.get_base_control().get_theme_icon("Node", "EditorIcons")
 			
 			btn_parent_node_selector.set_node_info(scene_root, node_icon)
 		else:
@@ -608,16 +607,16 @@ func set_parent_node(node_path: NodePath) -> void:
 	if not selected_parent_node:
 		# Fall back to scene root if path not found
 		selected_parent_node = scene_root
-		btn_parent_node_selector.set_node_info(scene_root, get_editor_interface().get_base_control().get_theme_icon("Node", "EditorIcons"))
+		btn_parent_node_selector.set_node_info(scene_root, EditorInterface.get_base_control().get_theme_icon("Node", "EditorIcons"))
 		printerr("[SceneBuilderDock] ", node_path, " not found in scene, defaulting to scene root")
 		return
 	
 	var node_name := selected_parent_node.get_class().split(".")[-1]
-	var node_icon := get_editor_interface().get_base_control().get_theme_icon(node_name, "EditorIcons")
+	var node_icon := EditorInterface.get_base_control().get_theme_icon(node_name, "EditorIcons")
 	
 	# if there's an invalid icon, we use the default node icon
-	if node_icon == get_editor_interface().get_base_control().get_theme_icon("invalid icon", "EditorIcons"):
-		node_icon = get_editor_interface().get_base_control().get_theme_icon("Node", "EditorIcons")
+	if node_icon == EditorInterface.get_base_control().get_theme_icon("invalid icon", "EditorIcons"):
+		node_icon = EditorInterface.get_base_control().get_theme_icon("Node", "EditorIcons")
 	
 	btn_parent_node_selector.set_node_info(selected_parent_node, node_icon)
 	print("[SceneBuilderDock] Parent node set to ", selected_parent_node.name)
@@ -879,31 +878,21 @@ func instantiate_selected_item_at_position() -> void:
 
 	if result and result.position:
 		var instance = get_instance_from_path(selected_item_data["uid"])
-		if selected_parent_node:
-			selected_parent_node.add_child(instance)
-		else:
-			scene_root.add_child(instance)
+		var parent: Node3D = selected_parent_node if selected_parent_node else scene_root
+		parent.add_child(instance)
 		instance.owner = scene_root
 		initialize_node_name(instance, selected_item_name)
-		
-		var new_position: Vector3 = result.position
-		
-		# TODO: Fix selected_item usage
-		if selected_item_data["use_random_vertical_offset"]:
-			new_position.y += random_offset_y
-		
-		var preview_global_position = preview_instance.global_position
-		var preview_global_rotation = preview_instance.global_rotation
-		var preview_scale = preview_instance.scale
-		
-		instance.global_position = preview_global_position
-		instance.global_rotation = preview_global_rotation
-		instance.scale = preview_scale
-		
+
+		instance.global_position = preview_instance.global_position
+		instance.global_rotation = preview_instance.global_rotation
+		instance.scale = preview_instance.scale
+
 		undo_redo.create_action("Instantiate selected item")
-		undo_redo.add_undo_method(scene_root, "remove_child", instance)
+		undo_redo.add_do_method(parent, "add_child", instance)
+		undo_redo.add_do_method(instance, "set_owner", scene_root)
+		undo_redo.add_undo_method(parent, "remove_child", instance)
 		undo_redo.add_do_reference(instance)
-		undo_redo.commit_action()
+		undo_redo.commit_action(false)
 
 	else:
 		print("[SceneBuilderDock] Raycast missed, items must be instantiated on a StaticBody with a CollisionShape")
@@ -1415,7 +1404,6 @@ func snap_position_to_grid(position: Vector3) -> Vector3:
 	if !checkbox_snap_enabled.button_pressed:
 		return position
 	if btn_use_local_space.button_pressed:
-		print("Snapping is disabled when local space is enabled")
 		return position
 	var snap_size = spinbox_translate_snap.value
 	return Vector3(
@@ -1429,7 +1417,6 @@ func snap_rotation_to_grid(rotation: Vector3) -> Vector3:
 	if !checkbox_snap_enabled.button_pressed:
 		return rotation
 	if btn_use_local_space.button_pressed:
-		print("Snapping is disabled when local space is enabled")
 		return rotation
 	var snap_radians = deg_to_rad(spinbox_rotate_snap.value)
 	return Vector3(
@@ -1443,7 +1430,6 @@ func snap_scale_to_grid(scale: Vector3) -> Vector3:
 	if !checkbox_snap_enabled.button_pressed:
 		return scale
 	if btn_use_local_space.button_pressed:
-		print("Snapping is disabled when local space is enabled")
 		return scale
 	var snap_amount = spinbox_scale_snap.value / 100.0
 	return Vector3(

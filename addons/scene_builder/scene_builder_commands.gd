@@ -185,10 +185,6 @@ func swap_nodes():
 	var _instance = preload("./Commands/swap_nodes.gd").new()
 	_instance.execute()
 
-func temporary_debug():
-	var _instance = preload("./Commands/temporary_debug.gd").new()
-	_instance.execute()
-
 func update_config(new_config) -> void:
 	config = new_config
 
@@ -196,5 +192,4 @@ func update_config(new_config) -> void:
 
 func _on_reusable_instance_done():
 	if reusable_instance != null:
-		print("Freeing reusable instance")
 		reusable_instance.queue_free()

@@ -138,7 +138,7 @@ func execute():
 	vbox.add_child(ok_button)
 
 func _on_ok_pressed():
-	var selected_paths = get_editor_interface().get_selected_paths()
+	var selected_paths = EditorInterface.get_selected_paths()
 	var texture_to_material = {}  # Maps from albedo texture path to material instance
 
 	# Generate materials for albedo textures

@@ -19,7 +19,7 @@ func execute():
 	var all_names = toolbox.get_all_node_names(current_scene)
 	
 	for node in selected_nodes:
-	
+
 		if node.scene_file_path:
 			# Load the PackedScene to get the root node's name
 			var packed_scene: PackedScene = load(node.scene_file_path)
@@ -27,6 +27,7 @@ func execute():
 				var scene_state: SceneState = packed_scene.get_state()
 				var root_node_name = scene_state.get_node_name(0)
 				var new_name = toolbox.increment_name_until_unique(root_node_name, all_names)
+				all_names.append(new_name)
 				undo_redo.add_do_method(node, "set_name", new_name)
 				undo_redo.add_undo_method(node, "set_name", node.name)
 			else:

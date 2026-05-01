@@ -2,7 +2,6 @@
 extends EditorPlugin
 
 var path_root = "res://Data/scene_builder/"
-var editor: EditorInterface
 var popup_instance: PopupPanel
 
 # Nodes
@@ -26,10 +25,6 @@ signal done
 func execute(root_dir: String):
 	if !root_dir.is_empty():
 		path_root = root_dir
-	
-	print("[Create Scene Builder Items] Requesting user input...")
-	
-	editor = get_editor_interface()
 	
 	popup_instance = PopupPanel.new()
 	add_child(popup_instance)
@@ -61,11 +56,8 @@ func execute(root_dir: String):
 
 
 func _on_ok_pressed():
-	print("[Create Scene Builder Items] On okay pressed")
-	
 	var selected_paths = EditorInterface.get_selected_paths()
-	print("[Create Scene Builder Items] Selected paths: " + str(selected_paths.size()))
-	
+
 	for path in selected_paths:
 		_create_resource(path)
 	
@@ -103,5 +95,3 @@ func _create_resource(path: String):
 	
 	database.add_item(collection_name, item_name, uid, settings)
 	database.save_database(database_path)
-	
-	print("[Create Scene Builder Items] Added to database: " + collection_name + "/" + item_name)
