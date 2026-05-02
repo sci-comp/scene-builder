@@ -417,30 +417,24 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 					if event.physical_keycode == KEY_1:
 						
 						if is_transform_mode_enabled():
-							if current_transform_mode == TransformMode.POSITION_X:
-								end_transform_mode()
-							else:
-								end_transform_mode()
+							end_transform_mode()
+							if current_transform_mode != TransformMode.POSITION_X:
 								start_transform_mode(TransformMode.POSITION_X)
 						else:
 							start_transform_mode(TransformMode.POSITION_X)
-					
+
 					elif event.physical_keycode == KEY_2:
 						if is_transform_mode_enabled():
-							if current_transform_mode == TransformMode.POSITION_Y:
-								end_transform_mode()
-							else:
-								end_transform_mode()
+							end_transform_mode()
+							if current_transform_mode != TransformMode.POSITION_Y:
 								start_transform_mode(TransformMode.POSITION_Y)
 						else:
 							start_transform_mode(TransformMode.POSITION_Y)
-					
+
 					elif event.physical_keycode == KEY_3:
 						if is_transform_mode_enabled():
-							if current_transform_mode == TransformMode.POSITION_Z:
-								end_transform_mode()
-							else:
-								end_transform_mode()
+							end_transform_mode()
+							if current_transform_mode != TransformMode.POSITION_Z:
 								start_transform_mode(TransformMode.POSITION_Z)
 						else:
 							start_transform_mode(TransformMode.POSITION_Z)
@@ -449,40 +443,32 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 					
 					if event.physical_keycode == KEY_1:
 						if is_transform_mode_enabled():
-							if current_transform_mode == TransformMode.ROTATION_X:
-								end_transform_mode()
-							else:
-								end_transform_mode()
+							end_transform_mode()
+							if current_transform_mode != TransformMode.ROTATION_X:
 								start_transform_mode(TransformMode.ROTATION_X)
 						else:
 							start_transform_mode(TransformMode.ROTATION_X)
-					
+
 					elif event.physical_keycode == KEY_2:
 						if is_transform_mode_enabled():
-							if current_transform_mode == TransformMode.ROTATION_Y:
-								end_transform_mode()
-							else:
-								end_transform_mode()
+							end_transform_mode()
+							if current_transform_mode != TransformMode.ROTATION_Y:
 								start_transform_mode(TransformMode.ROTATION_Y)
 						else:
 							start_transform_mode(TransformMode.ROTATION_Y)
-					
+
 					elif event.physical_keycode == KEY_3:
 						if is_transform_mode_enabled():
-							if current_transform_mode == TransformMode.ROTATION_Z:
-								end_transform_mode()
-							else:
-								end_transform_mode()
+							end_transform_mode()
+							if current_transform_mode != TransformMode.ROTATION_Z:
 								start_transform_mode(TransformMode.ROTATION_Z)
 						else:
 							start_transform_mode(TransformMode.ROTATION_Z)
-					
+
 					elif event.physical_keycode == KEY_4:
 						if is_transform_mode_enabled():
-							if current_transform_mode == TransformMode.SCALE:
-								end_transform_mode()
-							else:
-								end_transform_mode()
+							end_transform_mode()
+							if current_transform_mode != TransformMode.SCALE:
 								start_transform_mode(TransformMode.SCALE)
 						else:
 							start_transform_mode(TransformMode.SCALE)
@@ -1266,7 +1252,7 @@ func select_item(collection_name: String, item_name: String) -> void:
 	nine_path.self_modulate = Color.GREEN
 	selected_item_name = item_name
 	selected_item_data = selected_collection[selected_item_name]
-	placement_mode_enabled = true;
+	placement_mode_enabled = true
 	create_preview_instance()
 
 
@@ -1369,7 +1355,7 @@ func get_instance_from_path(_uid: String) -> Node3D:
 		path = ResourceUID.get_id_path(uid)
 	else:
 		printerr("[SceneBuilderDock] Does not have uid: ", ResourceUID.id_to_text(uid))
-		return
+		return null
 	
 	if ResourceLoader.exists(path):
 		var loaded = load(path)

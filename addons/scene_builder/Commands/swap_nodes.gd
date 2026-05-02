@@ -52,7 +52,7 @@ func execute():
 		instance.transform = node.transform
 
 		var parent = node.get_parent()
-		if parent and instance and node:
+		if parent:
 			parent.add_child(instance)
 			instance.owner = current_scene
 			instance.name = utilities.get_unique_name(instance.name, parent)

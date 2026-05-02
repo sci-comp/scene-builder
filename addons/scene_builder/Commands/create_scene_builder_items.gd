@@ -54,6 +54,8 @@ func execute(root_dir: String):
 	
 	ok_button.pressed.connect(_on_ok_pressed)
 
+	print("[Create Scene Builder Items] Requesting user input...")
+
 
 func _on_ok_pressed():
 	var selected_paths = EditorInterface.get_selected_paths()
@@ -95,3 +97,4 @@ func _create_resource(path: String):
 	
 	database.add_item(collection_name, item_name, uid, settings)
 	database.save_database(database_path)
+	print("[Create Scene Builder Items] Added to database: " + collection_name + "/" + item_name)

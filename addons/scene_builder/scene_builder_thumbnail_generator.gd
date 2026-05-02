@@ -79,7 +79,12 @@ func generate_thumbnail(scene_path: String, force_regenerate: bool = false) -> T
 	await RenderingServer.frame_post_draw
 	await get_tree().process_frame
 	await get_tree().process_frame
-	var image = viewport.get_texture().get_image()
+	var texture = viewport.get_texture()
+	if texture == null:
+		return _get_error_thumbnail()
+	var image = texture.get_image()
+	if image == null:
+		return _get_error_thumbnail()
 	var thumbnail = ImageTexture.create_from_image(image)
 	thumbnail_cache[scene_path] = thumbnail
 
