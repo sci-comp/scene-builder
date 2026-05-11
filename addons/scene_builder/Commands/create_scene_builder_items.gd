@@ -33,7 +33,6 @@ func execute(root_dir: String):
 	
 	popup_instance = PopupPanel.new()
 	add_child(popup_instance)
-	popup_instance.popup_centered(Vector2(500, 300))
 	
 	var create_items_scene_path = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_create_items.tscn")
 	if create_items_scene_path == "":
@@ -43,6 +42,8 @@ func execute(root_dir: String):
 	var create_items_scene := load(create_items_scene_path)
 	create_items = create_items_scene.instantiate()
 	popup_instance.add_child(create_items)
+	editor.get_base_control().add_child(popup_instance)
+	popup_instance.call_deferred("popup_centered", Vector2(500, 300))
 
 	collection_line_edit = create_items.get_node("Collection/LineEdit")
 	randomize_vertical_offset_checkbox = create_items.get_node("Boolean/VerticalOffset")
