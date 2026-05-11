@@ -13,7 +13,7 @@ func execute():
 	
 	undo_redo.create_action("Snap to Grid")
 	
-	var grid_size: float = 0.25 # Todo: this should be adjustable by the user
+	var grid_size: float = 1.0 # Todo: this should be adjustable by the user
 	
 	for selected in selected_nodes:
 		if not selected is Node3D:

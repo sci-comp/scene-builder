@@ -97,7 +97,7 @@ func _on_scene_submenu_item_selected(id: int):
 		SceneCommands.instantiate_in_a_row_1:
 			instantiate_in_a_row(1)
 		SceneCommands.instantiate_in_a_row_2:
-			instantiate_in_a_row(5)
+			instantiate_in_a_row(3)
 		SceneCommands.instantiate_in_a_row_3:
 			instantiate_in_a_row(10)
 		SceneCommands.push_to_grid:

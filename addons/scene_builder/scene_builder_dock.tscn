@@ -263,7 +263,7 @@ layout_mode = 2
 [node name="TabContainer" type="TabContainer" parent="PaletteContainer/Palette 1"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 3
+current_tab = 1
 tabs_visible = false
 
 [node name="1" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
@@ -280,7 +280,6 @@ size_flags_horizontal = 3
 columns = 4
 
 [node name="2" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -306,6 +305,7 @@ size_flags_horizontal = 3
 columns = 4
 
 [node name="4" type="ScrollContainer" parent="PaletteContainer/Palette 1/TabContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -837,7 +837,6 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 1
 
 [node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 2/TabContainer/2"]
-visible = false
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1389,7 +1388,6 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 1
 
 [node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 3/TabContainer/2"]
-visible = false
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1918,10 +1916,11 @@ layout_mode = 2
 [node name="TabContainer" type="TabContainer" parent="PaletteContainer/Palette 4"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 2
 tabs_visible = false
 
 [node name="1" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -1941,14 +1940,12 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 1
 
 [node name="Grid" type="GridContainer" parent="PaletteContainer/Palette 4/TabContainer/2"]
-visible = false
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
 [node name="3" type="ScrollContainer" parent="PaletteContainer/Palette 4/TabContainer"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -2790,10 +2787,9 @@ layout_mode = 2
 [node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Options" type="VBoxContainer" parent="Settings/Tab"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -2903,8 +2899,15 @@ layout_mode = 2
 size_flags_vertical = 4
 text = "Reload items"
 
+[node name="ClearItems" type="Button" parent="Settings/Tab/Options/Bottom"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "Clear Items"
+
 [node name="Fence" type="VBoxContainer" parent="Settings/Tab"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 

@@ -4,22 +4,3 @@
 
 [resource]
 script = ExtResource("1_64inv")
-root_dir = "res://Data/scene_builder/"
-disable_hotkeys = false
-instantiate_in_a_row_1 = 76
-instantiate_in_a_row_2 = 59
-instantiate_in_a_row_5 = 39
-alphabetize_nodes = 48
-reset_node_name = 78
-change_places = 67
-find_mismatched_types = 57
-swap_nodes = 83
-set_visibility = 72
-reset_transform = 84
-reset_transform_rotation = 82
-push_to_grid = 80
-push_parent_offset_to_child = 79
-create_audio_stream_player_3d = 44
-create_scene_builder_items = 47
-create_standard_material_3d = 77
-temporary_debug = 46
