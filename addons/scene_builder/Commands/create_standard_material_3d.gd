@@ -37,7 +37,7 @@ func execute():
 	# Popup
 	popup_instance = PopupPanel.new()
 	add_child(popup_instance)
-	popup_instance.popup_centered(Vector2(300, 200))
+	popup_instance.call_deferred("popup_centered", Vector2(500, 300))
 	# VBox
 	vbox = VBoxContainer.new()
 	popup_instance.add_child(vbox)
