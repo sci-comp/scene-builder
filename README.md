@@ -77,7 +77,7 @@ which means that a recursive directory pattern will exist,
 `res://addons/scene_builder/addons/scene_builder/`
 
 > [!NOTE]
-Implementation details: Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock. The script `scene_builder_commands.gd` adds commands to the Godot toolbar (Project > Tools) and listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file, located in `addons/scene_builder/Commands/`. In the other hand, we have `scene_builder_dock.gd`, which handles logic for the interactable scene builder dock.
+Implementation details: Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock. The script `scene_builder_commands.gd` registers the commands available in the command palette and listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file, located in `addons/scene_builder/Commands/`. In the other hand, we have `scene_builder_dock.gd`, which handles logic for the interactable scene builder dock.
 
 ---
 
@@ -145,7 +145,7 @@ We can enable the plugin now to preview collection names in the dock. Since our 
 To create an item resource,
 
 1. Select one or more paths in FileSystem that contain an imported scene with a root node that derives from type Node3D.
-2. Run the "Create scene builder items" command by opening the command palette (backtick) and typing "Create scene builder items", or by going to Project > Tools > Scene Builder > Create scene builder items
+2. Run the "Create scene builder items" command by opening the command palette (backtick) and typing "Create scene builder items"
 3. Fill out the fields in the popup window, then hit okay.
 4. After pressing okay, the `icon_studio` scene will be opened. Please close the scene when it's done without saving changes to icon_studio.tscn. However, if you would like to make changes to icon_studio.tscn, then that's a great way to customize your icons.
 5. In the scene builder dock, click the button "Reload all items"

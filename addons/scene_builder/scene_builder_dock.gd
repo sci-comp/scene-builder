@@ -211,7 +211,7 @@ func _enter_tree() -> void:
 	#endregion
 	
 	database_path = config.root_dir + "scene_builder_database.tres"
-	database = SceneBuilderDatabase.new() if not ResourceLoader.exists(database_path) else load(database_path)
+	load_database_from_disk()
 	thumbnail_generator = SceneBuilderThumbnailGenerator.new()
 	add_child(thumbnail_generator)
 	
@@ -633,7 +633,9 @@ func reload_all_items() -> void:
 		print("[SceneBuilderDock] Reload already in progress, skipping")
 		return
 	_is_reloading = true
-	
+
+	load_database_from_disk()
+
 	print("[SceneBuilderDock] Freeing all texture buttons")
 	
 	# Free all existing buttons from all palettes
@@ -890,7 +892,16 @@ func _end_drag_rotation() -> void:
 	preview_instance.basis = original_preview_basis
 
 
-func load_items_from_database(_collection_name: String):	
+func load_database_from_disk() -> void:
+	if ResourceLoader.exists(database_path):
+		# CACHE_MODE_REPLACE forces a disk read
+		database = ResourceLoader.load(database_path, "", ResourceLoader.CACHE_MODE_REPLACE) as SceneBuilderDatabase
+
+	if database == null:
+		database = SceneBuilderDatabase.new()
+
+
+func load_items_from_database(_collection_name: String):
 	if database.has_collection(_collection_name):
 		var items = database.get_collection(_collection_name)
 		var ordered_item_keys = database.get_item_names(_collection_name)

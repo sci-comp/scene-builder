@@ -69,6 +69,9 @@ func get_item_names(collection_name: String) -> Array[String]:
 
 
 func save_database(path: String) -> Error:
+	var dir := path.get_base_dir()
+	if not DirAccess.dir_exists_absolute(dir):
+		DirAccess.make_dir_recursive_absolute(dir)
 	return ResourceSaver.save(self, path)
 
 
