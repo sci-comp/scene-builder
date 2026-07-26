@@ -7,8 +7,6 @@ extends EditorPlugin
 ## replaces. Exactly one PackedScene should be selected in the FileSystem and
 ## at least one node should be selected in the Scene.
 ##
-## * Undo/redo is currently not supported for this command.
-##
 ## * Assumes that the selected PackedScene path, and selected nodes all
 ##	 have a Node3D as their root, skips selected nodes otherwise.
 
@@ -55,22 +53,25 @@ func execute():
 			continue
 		
 		instance.transform = node.transform
-		
+		instance.name = utilities.increment_name_until_unique(instance.name, all_names)
+
 		var parent = node.get_parent()
 		if parent and instance and node:
+			var original_index = node.get_index()
+
 			undo_redo.add_do_method(parent, "add_child", instance)
 			undo_redo.add_do_method(instance, "set_owner", current_scene)
-			undo_redo.add_do_method(instance, "set_name", utilities.increment_name_until_unique(instance.name, all_names))
-			undo_redo.add_do_method(node, "queue_free")
-			
-			undo_redo.add_undo_method(instance, "queue_free")
-			undo_redo.add_undo_method(self, "print_message", "Nodes cleared from memory, undo unavailable")
-			
+			undo_redo.add_do_method(node, "set_owner", null)
+			undo_redo.add_do_method(parent, "remove_child", node)
+
+			undo_redo.add_undo_method(instance, "set_owner", null)
+			undo_redo.add_undo_method(parent, "remove_child", instance)
+			undo_redo.add_undo_method(parent, "add_child", node)
+			undo_redo.add_undo_method(node, "set_owner", current_scene)
+			undo_redo.add_undo_method(parent, "move_child", node, original_index)
+
 			print("[Swap Nodes] Node has been swapped: " + node.name)
 		else:
 			printerr("[Swap Nodes] parent not found for node: " + node.name)
 	
 	undo_redo.commit_action()
-
-func print_message(message: String):
-	print(message)
