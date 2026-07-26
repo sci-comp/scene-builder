@@ -262,7 +262,7 @@ This feature was designed with fences in mind, but it might be useful in other w
 
 ## Contributors
 
-Scene Builder is made by Paul Hill, with help from contributions, who can be found [here](https://github.com/sci-comp/scene-builder/graphs/contributors).
+Scene Builder is made by Paul, with help from these awesome people: [link](https://github.com/sci-comp/scene-builder/graphs/contributors).
 
 The icon was made by Hano.
 
