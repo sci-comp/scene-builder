@@ -31,23 +31,18 @@ func _exit_tree():
 
 func setup_viewport():
 	var studio_path = SceneBuilderToolbox.find_resource_with_dynamic_path("icon_studio.tscn")
-	print("Studio path: ", studio_path)
 	if studio_path == "":
 		push_error("icon_studio.tscn not found")
 		return
-	
+
 	var studio_scene = load(studio_path)
-	print("Studio scene loaded: ", studio_scene)
 	icon_studio = studio_scene.instantiate()
-	print("Icon studio instantiated: ", icon_studio)
 	add_child(icon_studio)
-	
+
 	viewport = icon_studio.get_node("SubViewport")
 	viewport.world_3d = World3D.new()
 	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
-	print("Viewport found: ", viewport)
 	camera = viewport.get_node("Camera3D")
-	print("Camera found: ", camera)
 
 
 func generate_thumbnail(scene_path: String, force_regenerate: bool = false) -> Texture2D:

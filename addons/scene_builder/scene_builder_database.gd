@@ -75,12 +75,6 @@ func save_database(path: String) -> Error:
 	return ResourceSaver.save(self, path)
 
 
-func load_database(path: String) -> SceneBuilderDatabase:
-	if ResourceLoader.exists(path):
-		return load(path) as SceneBuilderDatabase
-	return null
-
-
 ## Debug helper
 func print_database_stats() -> void:
 	print("[SceneBuilderDatabase] Collections: ", collections.size())

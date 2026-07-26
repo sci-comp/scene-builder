@@ -39,7 +39,9 @@ func execute():
 		return
 	
 	undo_redo.create_action("Swap selected nodes with a single selected node in FileSystem")
-	
+
+	var all_names = utilities.get_all_node_names(current_scene)
+
 	for node in selected_nodes:
 		
 		if not node is Node3D:
@@ -58,7 +60,7 @@ func execute():
 		if parent and instance and node:
 			undo_redo.add_do_method(parent, "add_child", instance)
 			undo_redo.add_do_method(instance, "set_owner", current_scene)
-			undo_redo.add_do_method(instance, "set_name", utilities.get_unique_name(instance.name, parent))
+			undo_redo.add_do_method(instance, "set_name", utilities.increment_name_until_unique(instance.name, all_names))
 			undo_redo.add_do_method(node, "queue_free")
 			
 			undo_redo.add_undo_method(instance, "queue_free")

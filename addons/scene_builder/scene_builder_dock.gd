@@ -562,9 +562,9 @@ func select_collection(tab_index: int) -> void:
 func on_item_icon_clicked(_button_name: String) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		var item = selected_collection[_button_name]
-		EditorInterface.edit_resource(item)
-		var tabs = EditorInterface.get_inspector().get_parent().get_parent() as TabContainer
-		tabs.current_tab = tabs.get_tab_idx_from_control(EditorInterface.get_inspector().get_parent())
+		var uid = ResourceUID.text_to_id(item["uid"])
+		if ResourceUID.has_id(uid):
+			EditorInterface.get_file_system_dock().navigate_to_path(ResourceUID.get_id_path(uid))
 		return
 	
 	if !update_world_3d():

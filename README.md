@@ -85,6 +85,10 @@ Implementation details: Scene builder is logically divided into two main parts: 
 
 Scene Builder's behavior can be customized through the configuration file at `res://addons/scene_builder/scene_builder_config.tres`:
 
+- `root_dir` — where item and collection data is stored. Defaults to `res://Data/scene_builder/`.
+- `disable_hotkeys` — disables all Scene Builder keyboard shortcuts.
+- `command_palette_key` — the key that opens the command palette. Defaults to backtick (`` ` ``).
+
 ## Shortcuts
 
 With an item selected in the dock,
@@ -108,7 +112,7 @@ With an item selected in the dock,
 
 - Select children: Ctrl + Right Arrow
 - Select parents: Ctrl + Left Arrow
-- Right-click an item icon to quick-access its resource file
+- Right-click an item icon to reveal its source scene in the FileSystem dock
 
 ### Command Palette
 
@@ -116,13 +120,32 @@ SceneBuilder commands are accessed through a searchable command palette. Press t
 
 The command palette key can be customized by editing the resource `scene_builder_config.tres`, then reloading the project.
 
+The following productivity commands are available in the palette:
+
+| Command | Description |
+|---|---|
+| Alphabetize nodes | Sorts each selected node's children alphabetically (Nodes above Node3Ds) |
+| Change places | Swaps the position and rotation of exactly two selected Node3Ds |
+| Fix negative scaling | Converts negative scale values on selected Node3Ds to their absolute value |
+| Instantiate selected paths in a row (1m / 5m / 10m) | Instantiates the selected FileSystem scenes in a row, spaced apart |
+| Push to grid | Rounds selected Node3D positions to the nearest whole grid value |
+| Push parent offset to child | Zeroes a parent's position while preserving its children's world positions |
+| Reset node names | Renames selected nodes back to their source scene's root node name |
+| Reset transform | Resets selected Node3Ds' position, rotation, and scale |
+| Select children / Select parents | Selects the children or parents of the current selection |
+| Set visibility | Toggles visibility for all selected nodes, based on the first node selected |
+| Swap nodes | Replaces selected nodes with an instance of the selected FileSystem scene |
+| Create audio stream player 3d | Creates an AudioStreamPlayer3D for each selected audio file, parented to the selected node |
+| Add audio streams to randomizer | Adds selected audio files to the selected AudioStreamPlayer's AudioStreamRandomizer |
+| Create StandardMaterial3D | Creates a BaseMaterial3D for the current FileSystem selection |
+
 ## The Scene Builder Dock
 
 ![scene_builder_dock](./Documentation/Image/scene_builder_dock.png)
 
 ### Setting Up The Dock
 
-By default, our data directory is located here: `res://Data/SceneBuilderCollections/`. You may change this in the configuration file.
+By default, our data directory is located here: `res://Data/scene_builder/`. You may change this in the configuration file.
 
 1. Enter your desired collection names into the CollectionNames resource. Empty folders with matching names will be created, if they do not already exist.
 

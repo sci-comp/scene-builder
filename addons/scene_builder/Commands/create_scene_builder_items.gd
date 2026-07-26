@@ -2,7 +2,6 @@
 extends EditorPlugin
 
 var path_root = "res://Data/scene_builder/"
-var editor: EditorInterface
 var popup_instance: PopupPanel
 
 # Nodes
@@ -28,9 +27,7 @@ func execute(root_dir: String):
 		path_root = root_dir
 	
 	print("[Create Scene Builder Items] Requesting user input...")
-	
-	editor = get_editor_interface()
-	
+
 	popup_instance = PopupPanel.new()
 	add_child(popup_instance)
 	

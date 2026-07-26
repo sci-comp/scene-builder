@@ -2,7 +2,7 @@
 extends ConfirmationDialog
 class_name SceneBuilderCommandPalette
 
-signal command_selected(command_id: int)
+signal command_selected(command: Dictionary)
 
 var search_field: LineEdit
 var command_list: ItemList
@@ -141,13 +141,13 @@ func _execute_selected_command():
 		var idx = selected[0]
 		if idx < filtered_commands.size():
 			var cmd = filtered_commands[idx]
-			command_selected.emit(cmd["id"])
+			command_selected.emit(cmd)
 			hide()
 
 func _on_item_activated(index: int):
 	if index < filtered_commands.size():
 		var cmd = filtered_commands[index]
-		command_selected.emit(cmd["id"])
+		command_selected.emit(cmd)
 		hide()
 
 func _on_confirmed():

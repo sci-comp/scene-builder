@@ -33,28 +33,6 @@ static func replace_last(s: String, pattern: String, replacement: String) -> Str
 		return s
 	return s.substr(0, index) + replacement + s.substr(index + pattern.length())
 
-static func get_unique_name(base_name: String, parent: Node) -> String:
-	if !parent.has_node(base_name):
-		return base_name
-		
-	var counter = 1
-	var new_name = base_name
-	
-	# Strip existing numeric suffix if present
-	var regex = RegEx.new()
-	regex.compile("^(.*?)(\\d+)$")
-	var result = regex.search(base_name)
-	
-	if result:
-		new_name = result.get_string(1)
-		counter = int(result.get_string(2)) + 1
-	
-	# Find first available name
-	while parent.has_node(new_name + str(counter)):
-		counter += 1
-		
-	return new_name + str(counter)
-
 static func find_resource_with_dynamic_path(file_name: String) -> String:
 	# The recursive directory will exist when installing from a submodule
 	
@@ -101,11 +79,9 @@ static func increment_name_until_unique(new_name : String, all_names : Array) ->
 	else:
 		return new_name
 
+## Returns a rotation basis to align the chosen forward axis with -Z (Godot's forward).
+## Useful for placing objects along splines where models may have different forward axes.
 static func get_forward_axis_rotation(axis: ForwardAxis) -> Basis:
-	"""
-	Returns a rotation basis to align the chosen forward axis with -Z (Godot's forward).
-	Useful for placing objects along splines where models may have different forward axes.
-	"""
 	match axis:
 		ForwardAxis.POSITIVE_X: # +X forward -> rotate -90° around Y
 			return Basis(Quaternion(Vector3.UP, deg_to_rad(-90)))
@@ -123,11 +99,9 @@ static func get_forward_axis_rotation(axis: ForwardAxis) -> Basis:
 			printerr("[SceneBuilderToolbox] Invalid ForwardAxis value: ", axis)
 			return Basis.IDENTITY
 
+## Gets the dimensions of a scene by instantiating it temporarily and calculating AABB.
+## Returns Vector3.ZERO if the scene has no measurable geometry.
 static func get_scene_dimensions(uid: String) -> Vector3:
-	"""
-	Gets the dimensions of a scene by instantiating it temporarily and calculating AABB.
-	Returns Vector3.ZERO if the scene has no measurable geometry.
-	"""
 	var uid_int: int = ResourceUID.text_to_id(uid)
 	
 	if not ResourceUID.has_id(uid_int):
@@ -168,8 +142,8 @@ static func get_scene_dimensions(uid: String) -> Vector3:
 	
 	return combined_aabb.size
 
+## Recursively collect all VisualInstance3D nodes from a scene tree.
 static func _get_all_visual_instances(node: Node) -> Array[VisualInstance3D]:
-	"""Recursively collect all VisualInstance3D nodes from a scene tree."""
 	var visuals: Array[VisualInstance3D] = []
 	
 	if node is VisualInstance3D:

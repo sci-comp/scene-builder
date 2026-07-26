@@ -16,13 +16,14 @@ func execute(_spacing: int):
 
 	var instantiated_nodes = []
 	var x_offset = 0
+	var all_names = toolbox.get_all_node_names(current_scene)
 
 	for path in selected_paths:
 		if ResourceLoader.exists(path) and load(path) is PackedScene:
 			var scene = load(path) as PackedScene
 			var instance = scene.instantiate()
-			
-			instance.name = toolbox.get_unique_name(instance.name, current_scene)
+
+			instance.name = toolbox.increment_name_until_unique(instance.name, all_names)
 			
 			undo_redo.add_do_method(current_scene, "add_child", instance)
 			undo_redo.add_do_method(instance, "set_owner", current_scene)
